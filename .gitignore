@@ -1,4 +1,4 @@
 /e-transport-env/
 /common/__pycache__/
-/common/migration/__pycache__/
+/common/migrations/__pycache__/
 /transit/__pycache__/
