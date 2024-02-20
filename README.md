@@ -4,35 +4,38 @@
 
 ## Installation
 
-1. Clone the repository:
-```
-    git clone --depth 1 https://github.com/MioraRabearivelo/e-transport.git
+Clone the repository:
 
-```
-2. Install dependencies:
-```
-    python -m pip install requirements.txt
-
+```git clone --depth 1 https://github.com/MioraRabearivelo/e-transport.git
 ```
 
 ## Usage
 
 To run the project, use the following command:
 
+```cd e-transport/
+    sudo chown -R $USER:$USER .
 ```
-    cd e-transport/
-    sudo docker-compose run web
+and
 
+```docker build .
 ```
 then
 
+```docker-compose up
 ```
-    sudo docker-compose up
+
+go to the browser and navigate the address
+
+```http://0.0.0.0:8000/
+```
+
+The next command stop the conatiner
+
+```docker-compose down
 ```
 
 ## Run test
 
-```
-    pytest .
-
+``` pytest .
 ```
