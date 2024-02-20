@@ -7,9 +7,9 @@ from django.db import models
 
 class Destination(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    start_at = models.CharField(max_length=50)
-    end_at = models.CharField(max_length=50)
-    costs = models.DecimalField(max_digits=15, decimal_places=2)
+    start_at = models.CharField(max_length=50, default="")
+    end_at = models.CharField(max_length=50,default="")
+    costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
 
 
 class Seats(models.Model):
@@ -50,9 +50,9 @@ class Bagages(models.Model):
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
-    weigth = models.DecimalField(max_digits=5, decimal_places=2)
-    costs = models.DecimalField(max_digits=15, decimal_places=2)
-    bagage_name = models.CharField(max_length=50)
+    weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
+    bagage_name = models.CharField(max_length=50, default="")
     descripion = models.TextField(null=True, blank=True)
     
     @property
