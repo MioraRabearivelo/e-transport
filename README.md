@@ -15,34 +15,34 @@ Clone the repository:
 To run the project, use the following command:
 
 ```
-    cd e-transport/
-    sudo chown -R $USER:$USER .
+cd e-transport/
+sudo chown -R $USER:$USER .
 ```
 and
 
 ```
-    docker build .
+docker build .
 ```
 then
 
 ```
-    docker-compose up
+docker-compose up
 ```
 
 go to the browser and navigate the address
 
 ```
-    http://0.0.0.0:8000/
+http://0.0.0.0:8000/
 ```
 
 The next command stop the container docker
 
 ```
-    docker-compose down
+docker-compose down
 ```
 
 ## Run test
 
 ``` 
-    pytest .
+pytest .
 ```
