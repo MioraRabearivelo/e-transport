@@ -35,7 +35,7 @@ go to the browser and navigate the address
     http://0.0.0.0:8000/
 ```
 
-The next command stop the conatiner
+The next command stop the container docker
 
 ```
     docker-compose down
