@@ -7,7 +7,7 @@
 Clone the repository:
 
 ```
-    git clone --depth 1 https://github.com/MioraRabearivelo/e-transport.git
+git clone --depth 1 https://github.com/MioraRabearivelo/e-transport.git
 ```
 
 ## Usage
