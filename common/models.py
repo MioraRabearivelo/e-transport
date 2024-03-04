@@ -27,6 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
     pseudo = models.CharField(max_length=30, unique=True)
+    phone_number = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     image = models.ImageField(upload_to='images/')
@@ -34,7 +35,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
     
     USER_NAME_FIELD = "email"
-    REQUIRED_FIELDS = ["pseudo", "first_name", "last_name", "image"]
+    REQUIRED_FIELDS = ["pseudo", "first_name", "last_name", "image", "phone_number"]
     
     def __str__(self) :
         return self.pseudo
@@ -104,8 +105,7 @@ class Bagages(models.Model):
     def __str__(self):
         return self.customer
     
-
-            
+    
 class Driver(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     first_name = models.CharField(max_length=150)

@@ -1,19 +1,29 @@
 
 
 from django.contrib import admin
-from .models import CustomerUser, Destination, Seats, Bagages,\
+from .models import CustomUser, Customer, Destination, Seats, Bagages,\
     Driver, Car, Reservation, Validation, Payment
 
+class CustomUserAdmin(admin.ModelAdmin):
+    model = CustomUser
+    ordering = ('pseudo',)
+    search_fields = ('pseudo',)
+    list_display = [
+        'phone_number', 'pseudo', 'first_name', 'last_name'
+    ]
+
+admin.site.register(CustomUser, CustomUserAdmin)
+
+
 class CustomerUserAdmin(admin.ModelAdmin):
-    model = CustomerUser
+    model = Customer
     ordering = ('first_phone_number',)
     search_fields = ('customer_name',)
     list_display = [
-        'first_phone_number', 'second_phone_number',
-        'customer_name',
+        'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'seats'
     ]
 
-admin.site.register(CustomerUser, CustomerUserAdmin)
+admin.site.register(Customer, CustomerUserAdmin)
 
 
 class DestinationAdmin(admin.ModelAdmin):
@@ -21,7 +31,7 @@ class DestinationAdmin(admin.ModelAdmin):
     ordering = ('id',)
     search_fields = ('end_at',)
     list_display = [
-        'id', 'start_at','end_at','costs'
+        'id', 'start_at', 'end_at', 'costs'
     ]
 
 admin.site.register(Destination, DestinationAdmin)
