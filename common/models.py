@@ -1,6 +1,5 @@
 
 
-from typing import Any
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -30,11 +29,12 @@ class CustomerUser(AbstractBaseUser, PermissionsMixin):
     pseudo = models.CharField(max_length=30, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='images/')
     
     objects = CustomerUserManager()
     
     USER_NAME_FIELD = "email"
-    REQUIRED_FIELDS = ["pseudo", "first_name", "last_name"]
+    REQUIRED_FIELDS = ["pseudo", "first_name", "last_name", "image"]
     
     def __str__(self) :
         return self.pseudo
@@ -61,14 +61,8 @@ class Seats(models.Model):
             return seats_disponible
         super().save(*args, **kwargs)
     
-   
 
-
-"""class UserApp(AbstractUser):
-    pass"""
-
-
-class CustomerUser(models.Model):
+class Client(models.Model):
     first_phone_number = models.IntegerField(primary_key=True, editable=True, unique=True)
     second_phone_number = models.IntegerField(default=0)
     customer_name = models.CharField(max_length=150)
@@ -159,7 +153,7 @@ class Reservation(models.Model):
     
 class Validation(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    # user_validator = models.ForeignKey(UserApp, on_delete=models.SET_NULL, null=True)
+    user_validator = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
     reservation = models.ForeignKey(Reservation, on_delete=models.SET_NULL, null=True)
     customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
     bagages = models.ForeignKey(Bagages, on_delete=models.SET_NULL, null=True)
