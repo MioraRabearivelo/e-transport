@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 
-class CustomerUserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('The Email field must be set')
@@ -22,7 +22,7 @@ class CustomerUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
     
 
-class CustomerUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
@@ -31,7 +31,7 @@ class CustomerUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     image = models.ImageField(upload_to='images/')
     
-    objects = CustomerUserManager()
+    objects = CustomUserManager()
     
     USER_NAME_FIELD = "email"
     REQUIRED_FIELDS = ["pseudo", "first_name", "last_name", "image"]
@@ -84,7 +84,7 @@ class Customer(models.Model):
 class Bagages(models.Model):
     """
         When the weight of total bagages is set above 20kg,
-        the customer gotta paid 1kg of all bagage to 500ar
+        the customer gotta paid 1kg of all bagages to 500ar
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -124,7 +124,7 @@ class Car(models.Model):
     seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
     description = models.TextField()
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
-    customer = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.car_number
@@ -154,7 +154,7 @@ class Reservation(models.Model):
     
 class Validation(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    user_validator = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
+    user_validator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
