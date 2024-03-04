@@ -2,8 +2,27 @@
 
 import uuid
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+
+
+
+class CustomerUser(AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=50)
+    pseudo = models.CharField(max_length=30, unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    
+    objects = CustomerUserManager()
+    
+    USER_NAME_FIELD = "email"
+    REQUIRED_FIELDS = ["pseudo", "first_name", "last_name"]
+    
+    def __str__(self) :
+        return self.pseudo
+    
 
 class Destination(models.Model):
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
