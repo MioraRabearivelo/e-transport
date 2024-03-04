@@ -62,7 +62,7 @@ class Seats(models.Model):
         super().save(*args, **kwargs)
     
 
-class Client(models.Model):
+class Customer(models.Model):
     first_phone_number = models.IntegerField(primary_key=True, editable=True, unique=True)
     second_phone_number = models.IntegerField(default=0)
     customer_name = models.CharField(max_length=150)
@@ -87,7 +87,7 @@ class Bagages(models.Model):
         the customer gotta paid 1kg of all bagage to 500ar
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     bagage_name = models.CharField(max_length=50, default="")
@@ -119,11 +119,12 @@ class Driver(models.Model):
 
 class Car(models.Model):
     car_number = models.CharField(primary_key=True, editable=True, unique=True, max_length=30)
-    destination = models.ForeignKey(Destination, on_delete=models.SET_NULL, null=True)
-    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True)
-    seats = models.ForeignKey(Seats, on_delete=models.SET_NULL, null=True)
-    bagages = models.ForeignKey(Bagages, on_delete=models.SET_NULL, null=True)
-    customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
+    description = models.TextField()
+    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.car_number
@@ -139,11 +140,11 @@ class Payment(models.Model):
 
 class Reservation(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
-    bagages = models.ForeignKey(Bagages, on_delete=models.SET_NULL, null=True)
-    destination = models.ForeignKey(Destination, on_delete=models.SET_NULL, null=True)
-    payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null=True)
-    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
 
@@ -153,12 +154,12 @@ class Reservation(models.Model):
     
 class Validation(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    user_validator = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
-    reservation = models.ForeignKey(Reservation, on_delete=models.SET_NULL, null=True)
-    customer = models.ForeignKey(CustomerUser, on_delete=models.SET_NULL, null=True)
-    bagages = models.ForeignKey(Bagages, on_delete=models.SET_NULL, null=True)
-    seats = models.ForeignKey(Seats, on_delete=models.SET_NULL, null=True)
-    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)
+    user_validator = models.ForeignKey(CustomerUser, on_delete=models.CASCADE)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
+    seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
     upated_at = models.DateTimeField(auto_now=True)
     
