@@ -20,9 +20,14 @@ class CustomerUserAdmin(admin.ModelAdmin):
     ordering = ('first_phone_number',)
     search_fields = ('customer_name',)
     list_display = [
-        'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'seats'
+        'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'display_seats'
     ]
+    
+    def display_seats(self, obj):
+        return ','.join([str(seats) for seats in obj.seats.all()])
 
+    display_seats.short_description = 'Seats'
+    
 admin.site.register(Customer, CustomerUserAdmin)
 
 
