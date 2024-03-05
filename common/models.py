@@ -26,7 +26,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
-    pseudo = models.CharField(max_length=30, unique=True)
+    pseudo = models.CharField(primary_key=True, editable=False, default=uuid.uuid4, unique=True, max_length=30)
     phone_number = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -92,7 +92,7 @@ class Bagages(models.Model):
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     bagage_name = models.CharField(max_length=50, default="")
-    descripion = models.TextField(null=True, blank=True)
+    descripion = models.TextField(null=True, blank=True, default="")
     
     @property
     def get_weight(self):
@@ -122,7 +122,7 @@ class Car(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(default="", null=True, blank=True)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
