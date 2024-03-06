@@ -84,9 +84,9 @@ class Customer(models.Model):
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
-            return 'this fileds is required'
+            return 'The second phone number must be diffrent the first phone number'
         elif self.second_phone_number == 0 or None:
-            return 'null is not accepted'
+            return 'This fileds is required'
         super().save(*args, **kwargs)
     
     def __str__(self):
