@@ -44,7 +44,7 @@ class Paymentserializer(serializers.ModelSerializer):
     
     class Meta:
         model = Payment
-        fields = ['ref', 'payment_mode']
+        fields = ['ref', 'payment_mode', 'status']
         
         
 class ReservationSerializer(serializers.ModelSerializer):

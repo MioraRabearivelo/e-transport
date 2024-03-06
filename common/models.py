@@ -144,6 +144,8 @@ class Car(models.Model):
 class Payment(models.Model):
     ref = models.CharField(primary_key=True, editable=False, max_length=100)
     payment_mode = models.CharField(max_length=30, default="")
+    status = models.BooleanField(default=False)
+    
     
     def __str__(self):
         return self.ref
