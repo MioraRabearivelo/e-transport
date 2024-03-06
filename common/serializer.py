@@ -10,8 +10,10 @@ class DestinationSerializer(serializers.ModelSerializer):
         model = Destination
         fields = ['id', 'start_at', 'end_at', 'costs']
         
-class SeatSerkializer(serializers.ModelField):
-    
+class SeatSerializer(serializers.ModelField):
+
     class meta():
         model = Seats
-        fields = ['seats_total', 'seats_used', 'seats_free']
+        fields = ['seats_total', 'seats_used', 'seats_free', 'get_seats_choices']
+        
+    

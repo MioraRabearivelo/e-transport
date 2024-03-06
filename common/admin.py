@@ -47,7 +47,7 @@ class SeatsAdmin(admin.ModelAdmin):
     ordering = ('seats_used',)
     search_fields = ('seats_used',)
     list_display = [
-        'seats_used', 'seats_total', 'seats_free'
+        'seats_used', 'seats_total', 'seats_free', 'get_seats_choices'
     ]
 
 admin.site.register(Seats, SeatsAdmin)
