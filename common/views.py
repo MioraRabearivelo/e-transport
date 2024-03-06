@@ -15,6 +15,7 @@ class DestinationMixin(generics.GenericAPIView,
     
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
+    lookup_field = 'pk'
     
     def perform_create(self, serializer):
         start_date = serializer.validated_data.get('start_date')
@@ -41,3 +42,9 @@ class DestinationMixin(generics.GenericAPIView,
             raise ValueError("Cost fields is required")
         else:
             serializer.save()
+            
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
