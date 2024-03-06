@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=50)
-    pseudo = models.CharField(primary_key=True, editable=False, default=uuid.uuid4, unique=True, max_length=30)
+    pseudo = models.CharField(primary_key=True, editable=True, unique=True, max_length=50)
     phone_number = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
