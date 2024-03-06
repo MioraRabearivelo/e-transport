@@ -1,5 +1,6 @@
 
 
+import json
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -54,6 +55,13 @@ class Destination(models.Model):
 class Seats(models.Model):
     seats_total = models.IntegerField(default=32)
     seats_used = models.IntegerField(default=0)
+    seats_choises = models.CharField(max_length=200)
+    
+    def set_seats_choises(self, seats):
+        self.seats_choises = json.dumps(seats)
+        
+    def  get_seats_chioses(self):
+        return json.loads(self.seats_choises)
     
     @property
     def seats_free(self, *args, **kwargs):
