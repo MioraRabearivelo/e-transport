@@ -1,6 +1,6 @@
 # E-transport
 
-#### E-transport is the online application to register your trip, we offer a 100% completed control to those who want to use our platform
+#### E-transport is the online application to register your trip, we offer a 100% completed control for those who want to use our platform
 
 ## Installation
 
