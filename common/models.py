@@ -96,14 +96,14 @@ class Customer(models.Model):
 class Bagages(models.Model):
     """
         When the weight of total bagages is set above 20kg,
-        the customer gotta paid 1kg of all bagages to 500ar
+        the customer gotta paid 1kg of each bagage to 500ar
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     bagage_name = models.CharField(max_length=50, default="")
-    descripion = models.TextField(null=True, blank=True, default="")
+    description = models.TextField(null=True, blank=True, default="")
     
     @property
     def get_weight(self):

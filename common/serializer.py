@@ -2,7 +2,8 @@
 
 from rest_framework import serializers
 
-from .models import Destination, Seats, Customer
+from .models import Destination, Seats, Customer, Bagages
+
 
 class DestinationSerializer(serializers.ModelSerializer):
 
@@ -22,3 +23,11 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'seats']
+        
+
+class BagagesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Bagages
+        fields = ['customer', 'weigth', 'costs', 'bagage_name', 'description']
+        
