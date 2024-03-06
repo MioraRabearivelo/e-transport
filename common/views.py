@@ -48,3 +48,12 @@ class DestinationMixin(generics.GenericAPIView,
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
