@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 from .models import CustomUser, Customer, Destination, Seats, Bagages,\
-    Driver, Car, Reservation, Validation, Payment
+    Driver, Car, Reservation, Registration, Payment
 
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
@@ -97,8 +97,8 @@ class ReservationAdmin(admin.ModelAdmin):
 admin.site.register(Reservation, ReservationAdmin)
 
 
-class ValidationAdmin(admin.ModelAdmin):
-    model = Validation
+class RegistrationAdmin(admin.ModelAdmin):
+    model = Registration
     ordering = ('id',)
     search_fields = ('customer',)
     list_display = [
@@ -106,7 +106,7 @@ class ValidationAdmin(admin.ModelAdmin):
         'create_at', 'upated_at'
     ]
 
-admin.site.register(Validation, ValidationAdmin)
+admin.site.register(Registration,RegistrationAdmin)
 
 
 class PaymentAdmin(admin.ModelAdmin):

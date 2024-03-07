@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 from .models import Destination, Seats, Customer, Bagages, Driver, Payment,  \
-    Reservation, Validation
+    Reservation, Registration
 
 
 class DestinationSerializer(serializers.ModelSerializer):
@@ -54,7 +54,7 @@ class ReservationSerializer(serializers.ModelSerializer):
         fileds = ['customer', 'bagages', 'destination', 'payment', 'car', 'created_at', 'updated_at']
         
         
-class ValidationSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Validation

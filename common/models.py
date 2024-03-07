@@ -163,7 +163,7 @@ class Reservation(models.Model):
         return self.customer
     
     
-class Validation(models.Model):
+class Registration(models.Model):
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     user_validator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
