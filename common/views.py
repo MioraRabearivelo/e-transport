@@ -90,8 +90,7 @@ class UpdateSeats(generics.UpdateAPIView):
     
     def perform_update(self, serializer):
         seats_total = serializer.validated_data.get('seats_total')
-        if seats_total is None:
+        seats_choices = serializer.validated_data.get('seats_choices')
+        if seats_total  or seats_choices is None:
             raise ValueError("Seats total is required")
-        serializer.save(seats_total=seats_total)
-    
-    
+        serializer.save()

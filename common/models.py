@@ -81,7 +81,6 @@ class Customer(models.Model):
     cin = models.IntegerField(default=0)
     seats = models.ManyToManyField(Seats)
     
-    
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
             return 'The second phone number must be diffrent the first phone number'
@@ -96,7 +95,7 @@ class Customer(models.Model):
 class Bagages(models.Model):
     """
         When the weight of total bagages is set above 20kg,
-        the customer gotta paid 1kg of each bagage to 500ar
+        the customer gotta paid 1kg of each bagage to 500
     """
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -146,7 +145,6 @@ class Payment(models.Model):
     payment_mode = models.CharField(max_length=30, default="")
     status = models.BooleanField(default=False)
     
-    
     def __str__(self):
         return self.ref
 
@@ -178,3 +176,6 @@ class Validation(models.Model):
     
     def __str__(self):
         return self.customer
+    
+
+
