@@ -57,3 +57,6 @@ class DestinationMixin(generics.GenericAPIView,
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.patch(request, *args, **kwargs)
