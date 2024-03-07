@@ -81,5 +81,17 @@ class CreateSeats(generics.CreateAPIView):
         if seats_total is None:
             raise ValueError("Seats total is required")
         serializer.save(seats_total=seats_total)
+        
+
+class UpdateSeats(generics.UpdateAPIView):
+    queryset = Seats.objects.all()
+    serializer_class = SeatSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def perform_update(self, serializer):
+        seats_total = serializer.validated_data.get('seats_total')
+        if seats_total is None:
+            raise ValueError("Seats total is required")
+        serializer.save(seats_total=seats_total)
     
     
