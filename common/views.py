@@ -7,7 +7,7 @@ from .models import Destination, Seats
 from .serializer import DestinationSerializer, SeatSerializer 
 
 
-class DestinationMixin(generics.GenericAPIView, 
+class DestinationApiMixin(generics.GenericAPIView, 
         mixins.CreateModelMixin, 
         mixins.ListModelMixin, 
         mixins.UpdateModelMixin, 
@@ -63,7 +63,7 @@ class DestinationMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class ListSeats(generics.ListCreateAPIView):
+class ListSeatsAPiApi(generics.ListCreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     
@@ -83,7 +83,7 @@ class CreateSeats(generics.CreateAPIView):
         serializer.save(seats_total=seats_total)
         
 
-class UpdateSeats(generics.UpdateAPIView):
+class UpdateSeatsApi(generics.UpdateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     permission_classes = [IsAuthenticated]
@@ -94,3 +94,8 @@ class UpdateSeats(generics.UpdateAPIView):
         if seats_total  or seats_choices is None:
             raise ValueError("Seats total is required")
         serializer.save()
+        
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
