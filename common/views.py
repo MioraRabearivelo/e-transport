@@ -1,10 +1,10 @@
 
 
 from rest_framework import generics, mixins
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats
-from .serializer import DestinationSerializer, SeatSerializer 
+from .models import Destination, Seats, Driver
+from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -22,14 +22,9 @@ class DestinationApiMixin(generics.GenericAPIView,
         start_date = serializer.validated_data.get('start_date')
         end_date =  serializer.validated_data.get('end_date')
         costs =  serializer.validated_data.get('costs')
-        if start_date is None:
+        if start_date or end_date or costs is None:
             raise ValueError("Start date fields is required")
-        elif end_date is None:
-            raise ValueError("End date fields is required")
-        elif costs is None:
-            raise ValueError("Cost fields is required")
-        else:
-            serializer.save()
+        serializer.save()
             
     def perform_update(self, serializer):
         start_date = serializer.validated_data.get('start_date')
@@ -82,6 +77,10 @@ class CreateSeats(generics.CreateAPIView):
             raise ValueError("Seats total is required")
         serializer.save(seats_total=seats_total)
         
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
+        
 
 class UpdateSeatsApi(generics.UpdateAPIView):
     queryset = Seats.objects.all()
@@ -99,3 +98,21 @@ class UpdateSeatsApi(generics.UpdateAPIView):
         return self.update(request, *args, **kwargs)
 
 
+class CreateDriverApi(generics.CreateAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+    permission_classes = [IsAdminUser]
+    
+    def perform_create(self, serializer):
+        first_name = serializer.validated_data.get('first_name')
+        last_name = serializer.validated_data.get('last_name')
+        phone_number = serializer.validated_data.get('phone_number')
+        image = serializer.validated_data.get('image')
+        
+        if first_name or last_name or phone_number or image is None:
+            raise ValueError("All fileds is required") 
+        serializer.save()
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+    
