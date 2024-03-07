@@ -58,7 +58,7 @@ class DestinationApiMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class ListSeatsAPiApi(generics.ListCreateAPIView):
+class ListSeatsApi(generics.ListCreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     
@@ -66,7 +66,7 @@ class ListSeatsAPiApi(generics.ListCreateAPIView):
         return self.list(request, *args, **kwargs)
     
     
-class CreateSeats(generics.CreateAPIView):
+class CreateSeatsApi(generics.CreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     permission_classes = [IsAuthenticated]
@@ -78,10 +78,9 @@ class CreateSeats(generics.CreateAPIView):
         serializer.save(seats_total=seats_total)
         
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        return self.create(request, *args, **kwargs)  
     
-        
-
+    
 class UpdateSeatsApi(generics.UpdateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
