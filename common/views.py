@@ -1,9 +1,10 @@
 
 
 from rest_framework import generics, mixins
+from rest_framework.response import Response
 
-from .models import Destination
-from .serializer import DestinationSerializer
+from .models import Destination, Seats
+from .serializer import DestinationSerializer, SeatSerializer 
 
 
 class DestinationMixin(generics.GenericAPIView, 
@@ -15,7 +16,7 @@ class DestinationMixin(generics.GenericAPIView,
     
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
-    lookup_field = 'pk'
+    lookup_field = 'id'
     
     def perform_create(self, serializer):
         start_date = serializer.validated_data.get('start_date')
@@ -44,7 +45,7 @@ class DestinationMixin(generics.GenericAPIView,
             serializer.save()
             
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
+        pk = kwargs.get(self.pk)
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
@@ -60,3 +61,11 @@ class DestinationMixin(generics.GenericAPIView,
 
     def patch(self, request, *args, **kwargs):
         return self.patch(request, *args, **kwargs)
+    
+    
+class ListSeats(generics.ListCreateAPIView):
+    queryset = Seats.objects.all()
+    serializer_class = SeatSerializer
+    
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
