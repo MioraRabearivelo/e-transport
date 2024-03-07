@@ -76,6 +76,10 @@ class CreateSeats(generics.CreateAPIView):
     serializer_class = SeatSerializer
     permission_classes = [IsAuthenticated]
     
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    def perform_create(self, serializer):
+        seats_total = serializer.validated_data.get('seats_total')
+        if seats_total is None:
+            raise ValueError("Seats total is required")
+        serializer.save(seats_total=seats_total)
+    
     
