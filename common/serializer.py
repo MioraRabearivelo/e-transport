@@ -57,5 +57,5 @@ class ReservationSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
-        model = Validation
+        model = Registration
         fields = ['user_validator', 'reservation', 'customer', 'bagages', 'seats', 'car', 'create_at', 'upated_at']
