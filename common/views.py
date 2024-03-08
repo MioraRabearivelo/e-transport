@@ -165,7 +165,7 @@ class UpdateDriver(generics.ListCreateAPIView):
     
     
 class ListReservation(generics.ListCreateAPIView):
-    queryset = Reservation.objecty.all() 
+    queryset = Reservation.objects.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
     lookup_field =['id']
@@ -178,7 +178,7 @@ class ListReservation(generics.ListCreateAPIView):
     
 
 class CreateReservation(generics.CreateAPIView):
-    queryset = Reservation.objecty.all() 
+    queryset = Reservation.objects.all() 
     serializer_class = ReservationSerializer
     lookup_field =['id']
     
@@ -252,6 +252,14 @@ class UpdateRegistration(generics.UpdateAPIView):
         
     def put(self, request, *args, **kwargs):
         return self.put(request, *args, **kwargs)
-    
-    
+
+
+class DeleteRegistration(generics.DestroyAPIView):
+    queryset = Registration.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
     
