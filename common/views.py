@@ -128,3 +128,15 @@ class DeleteDriverApi(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
     
+
+class ListDriverApi(generics.ListCreateAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+    lookup_field = 'pk'
+    
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get(self.pk)
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
+    
