@@ -3,8 +3,9 @@
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats, Driver, Reservation
-from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer
+from .models import Destination, Seats, Driver, Reservation, Registration
+from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer,\
+    RegistrationSerializer
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -113,7 +114,7 @@ class CreateDriverApi(generics.CreateAPIView):
         image = serializer.validated_data.get('image')
         
         if first_name or last_name or phone_number or image is None:
-            raise ValueError("All fileds is required") 
+            raise ValueError("All fields is required") 
         serializer.save()
         
     def post(self, request, *args, **kwargs):
@@ -156,7 +157,7 @@ class UpdateDriverApi(generics.ListCreateAPIView):
         image = serializer.validated_data.get('image')
         
         if first_name or last_name or phone_number or image is None:
-            raise ValueError("All fileds is required") 
+            raise ValueError("All fields is required") 
         serializer.save()
         
     def put(self, request, *args, **kwargs):
@@ -186,7 +187,7 @@ class CreateReservationApi(generics.CreateAPIView):
         destination = serializer.validated_data.get('destination')
 
         if customer or destination  is None:
-            raise ValueError("All fileds is required") 
+            raise ValueError("All fields is required") 
         serializer.save()
         
     def post(self, request, *args, **kwargs):
@@ -204,7 +205,7 @@ class UpdateResevationApi(generics.ListCreateAPIView):
         destination = serializer.validated_data.get('destination')
         
         if customer or destination  is None:
-            raise ValueError("All fileds is required") 
+            raise ValueError("All fields is required") 
         serializer.save()
         
     def put(self, request, *args, **kwargs):
@@ -219,4 +220,17 @@ class DeleteReservationApi(generics.DestroyAPIView):
         
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+    
+
+class ListRegistrationApi(generics.ListCreateAPIView):
+    queryset = Registration.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+    
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get(self.pk)
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
     
