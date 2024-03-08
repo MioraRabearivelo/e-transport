@@ -3,9 +3,9 @@
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats, Driver, Reservation, Registration
+from .models import Destination, Seats, Driver, Reservation, Registration, Message
 from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer,\
-    RegistrationSerializer
+    RegistrationSerializer, MessageSerializer
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -59,7 +59,7 @@ class DestinationApiMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class ListSeats(generics.ListCreateAPIView):
+class ListSeats(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     lookup_field = 'pk'
@@ -131,7 +131,7 @@ class DeleteDriver(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListDriver(generics.ListCreateAPIView):
+class ListDriver(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAuthenticated]
@@ -144,7 +144,7 @@ class ListDriver(generics.ListCreateAPIView):
         return self.list(*args, **kwargs)
     
     
-class UpdateDriver(generics.ListCreateAPIView):
+class UpdateDriver(generics.UpdateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -164,7 +164,7 @@ class UpdateDriver(generics.ListCreateAPIView):
         return self.put(request, *args, **kwargs)
     
     
-class ListReservation(generics.ListCreateAPIView):
+class ListReservation(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Reservation.objects.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -194,7 +194,7 @@ class CreateReservation(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
     
-class UpdateResevation(generics.ListCreateAPIView):
+class UpdateResevation(generics.UpdateAPIView):
     queryset = Reservation.objects.all()
     serializer_class =ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -222,7 +222,7 @@ class DeleteReservation(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListRegistration(generics.ListCreateAPIView):
+class ListRegistration(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [IsAuthenticated]
@@ -262,4 +262,21 @@ class DeleteRegistration(generics.DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+    
+
+class CreateMessage(generics.CreateAPIView):
+    queryset = Message.objects.all() 
+    serializer_class =MessageSerializer
+    
+    def perform_create(self, serializer):
+        name = serializer.validated_data.get('name')
+        contact = serializer.validated_data.get('contact')
+        message_content = serializer.validated_data.get('message_content')
+
+        if name or contact or  message_content is None:
+            raise ValueError("All fields is required") 
+        serializer.save()
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
     
