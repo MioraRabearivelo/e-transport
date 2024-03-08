@@ -61,9 +61,13 @@ class DestinationApiMixin(generics.GenericAPIView,
 class ListSeatsApi(generics.ListCreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
+    lookup_field = 'pk'
     
     def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+        pk = kwargs.get(self.pk)
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
     
     
 class CreateSeatsApi(generics.CreateAPIView):
@@ -114,4 +118,13 @@ class CreateDriverApi(generics.CreateAPIView):
         
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+    
+
+class DeleteDriverApi(generics.DestroyAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+    permission_classes = [IsAdminUser]
+        
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
     
