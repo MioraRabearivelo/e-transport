@@ -140,3 +140,22 @@ class ListDriverApi(generics.ListCreateAPIView):
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
     
+    
+class UpdateDriverApi(generics.ListCreateAPIView):
+    queryset = Driver.objects.all()
+    serializer_class = DriverSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = 'pk'
+    
+    def perform_update(self, serializer):
+        first_name = serializer.validated_data.get('first_name')
+        last_name = serializer.validated_data.get('last_name')
+        phone_number = serializer.validated_data.get('phone_number')
+        image = serializer.validated_data.get('image')
+        
+        if first_name or last_name or phone_number or image is None:
+            raise ValueError("All fileds is required") 
+        serializer.save()
+        
+    def put(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
