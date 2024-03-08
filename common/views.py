@@ -3,8 +3,8 @@
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats, Driver
-from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer
+from .models import Destination, Seats, Driver, Reservation
+from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -132,6 +132,7 @@ class DeleteDriverApi(generics.DestroyAPIView):
 class ListDriverApi(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
     
     def get(self, request, *args, **kwargs):
@@ -159,3 +160,17 @@ class UpdateDriverApi(generics.ListCreateAPIView):
         
     def put(self, request, *args, **kwargs):
         return self.put(request, *args, **kwargs)
+    
+    
+class ReservationListApi(generics.ListCreateAPIView):
+    queryset = Reservation.objecty.all() 
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'pk'
+    
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get(self.pk)
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
+    
