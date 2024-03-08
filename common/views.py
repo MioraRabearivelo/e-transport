@@ -124,6 +124,7 @@ class DeleteDriverApi(generics.DestroyAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
+    lookup_field = ['id']
         
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
@@ -133,7 +134,7 @@ class ListDriverApi(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'pk'
+    lookup_field = ['id']
     
     def get(self, request, *args, **kwargs):
         pk = kwargs.get(self.pk)
@@ -146,7 +147,7 @@ class UpdateDriverApi(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
-    lookup_field = 'pk'
+    lookup_field = ['id']
     
     def perform_update(self, serializer):
         first_name = serializer.validated_data.get('first_name')
@@ -166,7 +167,7 @@ class ListReservationApi(generics.ListCreateAPIView):
     queryset = Reservation.objecty.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
-    lookup_field = 'pk'
+    lookup_field =['id']
     
     def get(self, request, *args, **kwargs):
         pk = kwargs.get(self.pk)
@@ -178,11 +179,11 @@ class ListReservationApi(generics.ListCreateAPIView):
 class CreateReservationApi(generics.CreateAPIView):
     queryset = Reservation.objecty.all() 
     serializer_class = ReservationSerializer
-    lookup_field = 'pk'
+    lookup_field =['id']
     
     def perform_create(self, serializer):
-        customer = serializer.validated_data.get('first_name')
-        destination = serializer.validated_data.get('last_name')
+        customer = serializer.validated_data.get('customer')
+        destination = serializer.validated_data.get('destination')
 
         if customer or destination  is None:
             raise ValueError("All fileds is required") 
@@ -191,3 +192,20 @@ class CreateReservationApi(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
     
+    
+class UpdateResevation(generics.ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class =ReservationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+    
+    def perform_update(self, serializer):
+        customer = serializer.validated_data.get('customer')
+        destination = serializer.validated_data.get('destination')
+        
+        if customer or destination  is None:
+            raise ValueError("All fileds is required") 
+        serializer.save()
+        
+    def put(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
