@@ -321,3 +321,14 @@ class CreateCar(generics.CreateAPIView):
         
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+    
+
+class DeleteCar(generics.DestroyAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = [IsAdminUser]
+    lookup_field = ['id']
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    
