@@ -162,7 +162,7 @@ class UpdateDriverApi(generics.ListCreateAPIView):
         return self.put(request, *args, **kwargs)
     
     
-class ReservationListApi(generics.ListCreateAPIView):
+class ListReservationApi(generics.ListCreateAPIView):
     queryset = Reservation.objecty.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -173,4 +173,21 @@ class ReservationListApi(generics.ListCreateAPIView):
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
+    
+
+class CreateReservationApi(generics.CreateAPIView):
+    queryset = Reservation.objecty.all() 
+    serializer_class = ReservationSerializer
+    lookup_field = 'pk'
+    
+    def perform_create(self, serializer):
+        customer = serializer.validated_data.get('first_name')
+        destination = serializer.validated_data.get('last_name')
+
+        if customer or destination  is None:
+            raise ValueError("All fileds is required") 
+        serializer.save()
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
     
