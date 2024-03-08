@@ -2,8 +2,7 @@
 
 from django.contrib import admin
 from .models import CustomUser, Customer, Destination, Seats, Bagages,\
-    Driver, Car, Reservation, Registration, Payment
-
+    Driver, Car, Reservation, Registration, Payment, Message
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
     ordering = ('pseudo',)
@@ -119,3 +118,10 @@ class PaymentAdmin(admin.ModelAdmin):
 
 admin.site.register(Payment, PaymentAdmin)
 
+
+class MessageAdmin(admin.ModelAdmin):
+    model = Message
+    ordering = ('name',)
+    search = ('name',)
+    list_display = ['name', 'contact', 'message_content']
+admin.site.register(Message, MessageAdmin)
