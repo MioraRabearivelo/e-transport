@@ -3,9 +3,9 @@
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats, Driver, Reservation, Registration, Message
+from .models import Destination, Seats, Driver, Reservation, Registration, Message, Car
 from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer,\
-    RegistrationSerializer, MessageSerializer
+    RegistrationSerializer, MessageSerializer, CarSerializer
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -284,10 +284,23 @@ class CreateMessage(generics.CreateAPIView):
 class ListMessage(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'pk'
     
     def get(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(*args, **kwargs)
+
+
+class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    lookup_field = ['id']
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get(self.pk)
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
