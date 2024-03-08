@@ -16,7 +16,7 @@ class DestinationApiMixin(generics.GenericAPIView,
     
     queryset = Destination.objects.all()
     serializer_class = DestinationSerializer
-    lookup_field = 'id'
+    lookup_field = ['id']
     
     def perform_create(self, serializer):
         start_date = serializer.validated_data.get('start_date')
@@ -193,7 +193,7 @@ class CreateReservationApi(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
     
-class UpdateResevation(generics.ListCreateAPIView):
+class UpdateResevationApi(generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class =ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -209,3 +209,14 @@ class UpdateResevation(generics.ListCreateAPIView):
         
     def put(self, request, *args, **kwargs):
         return self.put(request, *args, **kwargs)
+    
+
+class DeleteReservationApi(generics.DestroyAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+        
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    
