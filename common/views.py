@@ -59,7 +59,7 @@ class DestinationApiMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class ListSeatsApi(generics.ListCreateAPIView):
+class ListSeats(generics.ListCreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     lookup_field = 'pk'
@@ -71,7 +71,7 @@ class ListSeatsApi(generics.ListCreateAPIView):
         return self.list(*args, **kwargs)
     
     
-class CreateSeatsApi(generics.CreateAPIView):
+class CreateSeats(generics.CreateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     permission_classes = [IsAuthenticated]
@@ -86,7 +86,7 @@ class CreateSeatsApi(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)  
     
     
-class UpdateSeatsApi(generics.UpdateAPIView):
+class UpdateSeats(generics.UpdateAPIView):
     queryset = Seats.objects.all()
     serializer_class = SeatSerializer
     permission_classes = [IsAuthenticated]
@@ -102,7 +102,7 @@ class UpdateSeatsApi(generics.UpdateAPIView):
         return self.update(request, *args, **kwargs)
 
 
-class CreateDriverApi(generics.CreateAPIView):
+class CreateDriver(generics.CreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -121,7 +121,7 @@ class CreateDriverApi(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
 
-class DeleteDriverApi(generics.DestroyAPIView):
+class DeleteDriver(generics.DestroyAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -131,7 +131,7 @@ class DeleteDriverApi(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListDriverApi(generics.ListCreateAPIView):
+class ListDriver(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAuthenticated]
@@ -144,7 +144,7 @@ class ListDriverApi(generics.ListCreateAPIView):
         return self.list(*args, **kwargs)
     
     
-class UpdateDriverApi(generics.ListCreateAPIView):
+class UpdateDriver(generics.ListCreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -164,7 +164,7 @@ class UpdateDriverApi(generics.ListCreateAPIView):
         return self.put(request, *args, **kwargs)
     
     
-class ListReservationApi(generics.ListCreateAPIView):
+class ListReservation(generics.ListCreateAPIView):
     queryset = Reservation.objecty.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -177,7 +177,7 @@ class ListReservationApi(generics.ListCreateAPIView):
         return self.list(*args, **kwargs)
     
 
-class CreateReservationApi(generics.CreateAPIView):
+class CreateReservation(generics.CreateAPIView):
     queryset = Reservation.objecty.all() 
     serializer_class = ReservationSerializer
     lookup_field =['id']
@@ -194,7 +194,7 @@ class CreateReservationApi(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
     
-class UpdateResevationApi(generics.ListCreateAPIView):
+class UpdateResevation(generics.ListCreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class =ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -212,7 +212,7 @@ class UpdateResevationApi(generics.ListCreateAPIView):
         return self.put(request, *args, **kwargs)
     
 
-class DeleteReservationApi(generics.DestroyAPIView):
+class DeleteReservation(generics.DestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -222,7 +222,7 @@ class DeleteReservationApi(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListRegistrationApi(generics.ListCreateAPIView):
+class ListRegistration(generics.ListCreateAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [IsAuthenticated]
@@ -233,4 +233,25 @@ class ListRegistrationApi(generics.ListCreateAPIView):
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
+    
+    
+class UpdateRegistration(generics.UpdateAPIView):
+    queryset = Registration.objects.all()
+    serializer_class = RegistrationSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+    
+    def perform_update(self, serializer):
+        user_validator = serializer.validated_data.get('user_validator')
+        reservation = serializer.validated_data.get('reservation')
+        bagages = serializer.validated_data.get('bagages')
+        
+        if user_validator or reservation or bagages is None:
+            raise ValueError("All fields is required") 
+        serializer.save()
+        
+    def put(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
+    
+    
     
