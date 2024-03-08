@@ -304,4 +304,20 @@ class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(*args, **kwargs)
-    
+
+
+class CreateCar(generics.CreateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+
+    def perform_create(self, serializer):
+        car_number = serializer.validated_data.get('car_number')
+        seats = serializer.validated_data.get('seats')
+        description = serializer.validated_data.get('description')
+
+        if car_number or seats or  description is None:
+            raise ValueError("All fields is required") 
+        serializer.save()
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
