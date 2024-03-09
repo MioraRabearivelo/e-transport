@@ -3,8 +3,8 @@
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Seats, Driver, Reservation, Registration, Message, Car
-from .serializer import DestinationSerializer, SeatSerializer, DriverSerializer, ReservationSerializer,\
+from .models import Destination, Driver, Reservation, Registration, Message, Car
+from .serializer import DestinationSerializer,  DriverSerializer, ReservationSerializer,\
     RegistrationSerializer, MessageSerializer, CarSerializer
 
 
@@ -41,10 +41,10 @@ class DestinationApiMixin(generics.GenericAPIView,
             serializer.save()
             
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get(self.pk)
+        pk = kwargs.get('pk')
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
@@ -59,49 +59,6 @@ class DestinationApiMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class ListSeats(generics.ListCreateAPIView, generics.RetrieveAPIView):
-    queryset = Seats.objects.all()
-    serializer_class = SeatSerializer
-    lookup_field = 'pk'
-    
-    def get(self, request, *args, **kwargs):
-        pk = kwargs.get(self.pk)
-        if pk is not None:
-            return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
-    
-    
-class CreateSeats(generics.CreateAPIView):
-    queryset = Seats.objects.all()
-    serializer_class = SeatSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def perform_create(self, serializer):
-        seats_total = serializer.validated_data.get('seats_total')
-        if seats_total is None:
-            raise ValueError("Seats total is required")
-        serializer.save(seats_total=seats_total)
-        
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)  
-    
-    
-class UpdateSeats(generics.UpdateAPIView):
-    queryset = Seats.objects.all()
-    serializer_class = SeatSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def perform_update(self, serializer):
-        seats_total = serializer.validated_data.get('seats_total')
-        seats_choices = serializer.validated_data.get('seats_choices')
-        if seats_total  or seats_choices is None:
-            raise ValueError("Seats total is required")
-        serializer.save()
-        
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-
 class CreateDriver(generics.CreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
@@ -138,10 +95,10 @@ class ListDriver(generics.ListCreateAPIView, generics.RetrieveAPIView):
     lookup_field = ['id']
     
     def get(self, request, *args, **kwargs):
-        pk = kwargs.get(self.pk)
+        pk = kwargs.get('pk')
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
     
     
 class UpdateDriver(generics.UpdateAPIView):
@@ -174,7 +131,7 @@ class ListReservation(generics.ListCreateAPIView, generics.RetrieveAPIView):
         pk = kwargs.get(self.pk)
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
     
 
 class CreateReservation(generics.CreateAPIView):
@@ -232,7 +189,7 @@ class ListRegistration(generics.ListCreateAPIView, generics.RetrieveAPIView):
         pk = kwargs.get(self.pk)
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
     
     
 class UpdateRegistration(generics.UpdateAPIView):
@@ -291,7 +248,7 @@ class ListMessage(generics.ListCreateAPIView, generics.RetrieveAPIView):
         pk = kwargs.get('pk')
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
 
 
 class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
@@ -303,7 +260,7 @@ class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
         pk = kwargs.get(self.pk)
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
-        return self.list(*args, **kwargs)
+        return self.list(request, *args, **kwargs)
 
 
 class CreateCar(generics.CreateAPIView):

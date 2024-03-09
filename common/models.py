@@ -49,30 +49,8 @@ class Destination(models.Model):
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     
     def __str__(self):
-        return self.costs
+        return str(self.id)
 
-
-class Seats(models.Model):
-    seats_total = models.IntegerField(default=32)
-    seats_used = models.IntegerField(default=0)
-    seats_choices = models.CharField(max_length=200)
-    
-    @property
-    def set_seats_choices(self, seats):
-        self.seats_choices = json.dumps(seats)
-        return self.seats_choices
-     
-    @property   
-    def  get_seats_choices(self) -> list:
-        return json.loads(self.seats_choices)
-    
-    @property
-    def seats_free(self, *args, **kwargs):
-        if self.seats_used >= 1:
-            seats_disponible = self.seats_total - self.seats_used
-            return seats_disponible
-        super().save(*args, **kwargs)
-    
 
 class Customer(models.Model):
     first_phone_number = models.IntegerField(primary_key=True, editable=True, unique=True)
@@ -89,7 +67,7 @@ class Customer(models.Model):
         super().save(*args, **kwargs)
     
     def __str__(self):
-        return self.customer_name
+        return str(self.first_phone_number)
     
     
 class Bagages(models.Model):
@@ -113,7 +91,7 @@ class Bagages(models.Model):
         return self.costs 
     
     def __str__(self):
-        return self.customer
+        return str(self.id)
     
     
 class Driver(models.Model):
@@ -131,36 +109,33 @@ class Car(models.Model):
     car_number = models.CharField(primary_key=True, editable=True, unique=True, max_length=30)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
+    seats_total = models.IntegerField(default=32)
     description = models.TextField(default="", null=True, blank=True)
-    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
-    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.car_number
     
 
-class Payment(models.Model):
+"""class Payment(models.Model):
     ref = models.CharField(primary_key=True, editable=False, max_length=100)
     payment_mode = models.CharField(max_length=30, default="")
     status = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.ref
-
+        return str(self.ref)
+"""
 
 class Reservation(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)    
-
+    
     def __str__(self):
-        return self.customer
+        return str(self.customer)
     
     
 class Registration(models.Model):
@@ -175,11 +150,11 @@ class Registration(models.Model):
     upated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return self.customer
+        return str(self.customer)
     
     
 class Message(models.Model):
-    name = models.CharField(max_legth=50)
+    name = models.CharField(max_length=50)
     contact = models.IntegerField(default=0)
     message_content = models.TextField()
     

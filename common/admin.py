@@ -1,14 +1,16 @@
 
 
 from django.contrib import admin
-from .models import CustomUser, Customer, Destination, Seats, Bagages,\
-    Driver, Car, Reservation, Registration, Payment, Message
+from .models import CustomUser, Customer, Destination, Bagages,\
+    Driver, Car, Reservation, Registration, Message
+    
+    
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
     ordering = ('pseudo',)
     search_fields = ('pseudo',)
     list_display = [
-        'phone_number', 'pseudo', 'first_name', 'last_name'
+        'email', 'phone_number', 'pseudo', 'first_name', 'last_name'
     ]
 
 admin.site.register(CustomUser, CustomUserAdmin)
@@ -21,11 +23,6 @@ class CustomerUserAdmin(admin.ModelAdmin):
     list_display = [
         'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'display_seats'
     ]
-    
-    def display_seats(self, obj):
-        return ','.join([str(seats) for seats in obj.seats.all()])
-
-    display_seats.short_description = 'Seats'
     
 admin.site.register(Customer, CustomerUserAdmin)
 
@@ -41,23 +38,12 @@ class DestinationAdmin(admin.ModelAdmin):
 admin.site.register(Destination, DestinationAdmin)
 
 
-class SeatsAdmin(admin.ModelAdmin):
-    model = Seats
-    ordering = ('seats_used',)
-    search_fields = ('seats_used',)
-    list_display = [
-        'seats_used', 'seats_total', 'seats_free', 'get_seats_choices'
-    ]
-
-admin.site.register(Seats, SeatsAdmin)
-
-
 class BagagesAdmin(admin.ModelAdmin):
     model = Bagages
     ordering = ('id',)
     search_fields = ('customer',)
     list_display = [
-        'id', 'customer', 'weigth', 'costs', 'bagage_name', 'descripion'
+        'id', 'customer', 'weigth', 'costs', 'bagage_name', 'description'
     ]
 
 admin.site.register(Bagages, BagagesAdmin)
@@ -79,18 +65,18 @@ class CarAdmin(admin.ModelAdmin):
     ordering = ('car_number',)
     search_fields = ('car_number',)
     list_display = [
-        'car_number', 'driver', 'destination', 'seats', 'bagages', 'customer'
+        'car_number', 'driver', 'destination', 'seats_total'
     ]
 
 admin.site.register(Car, CarAdmin)
 
 class ReservationAdmin(admin.ModelAdmin):
     model = Reservation
-    ordering = ('id',)
+    ordering = ('customer',)
     search_fields = ('customer',)
     list_display = [
-        'id', 'customer', 'bagages', 'destination', 'customer', 
-        'payment', 'car', 'created_at', 'updated_at'
+        'id', 'customer', 'bagages', 'destination',
+        'car', 'created_at', 'updated_at'
     ]
 
 admin.site.register(Reservation, ReservationAdmin)
@@ -108,7 +94,7 @@ class RegistrationAdmin(admin.ModelAdmin):
 admin.site.register(Registration,RegistrationAdmin)
 
 
-class PaymentAdmin(admin.ModelAdmin):
+"""class PaymentAdmin(admin.ModelAdmin):
     model = Payment
     ordering = ('ref',)
     search_fields = ('payment_mode',)
@@ -116,7 +102,7 @@ class PaymentAdmin(admin.ModelAdmin):
         'ref', 'payment_mode'
     ]
 
-admin.site.register(Payment, PaymentAdmin)
+admin.site.register(Payment, PaymentAdmin)"""
 
 
 class MessageAdmin(admin.ModelAdmin):

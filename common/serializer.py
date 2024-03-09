@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 
-from .models import Destination, Seats, Customer, Bagages, Driver, Payment,  \
+from .models import Destination,  Customer, Bagages, Driver,  \
     Reservation, Registration, Message, Car
 
 
@@ -12,12 +12,7 @@ class DestinationSerializer(serializers.ModelSerializer):
         model = Destination
         fields = ['id', 'start_at', 'end_at', 'costs']
         
-class SeatSerializer(serializers.ModelField):
 
-    class meta():
-        model = Seats
-        fields = ['seats_total', 'seats_used', 'seats_free', 'get_seats_choices']
-        
 
 class CustomerSerializer(serializers.ModelSerializer):
     
@@ -44,21 +39,21 @@ class CarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['car_number', 'destination', 'driver', 'seats', 'description', 'bagages', 'customer']
+        fields = ['car_number', 'destination', 'driver',  'description', 'bagages', 'customer']
 
 
-class Paymentserializer(serializers.ModelSerializer):
+"""class Paymentserializer(serializers.ModelSerializer):
     
     class Meta:
         model = Payment
         fields = ['ref', 'payment_mode', 'status']
-        
+        """
         
 class ReservationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Reservation
-        fileds = ['customer', 'bagages', 'destination', 'payment', 'car', 'created_at', 'updated_at']
+        fileds = ['customer', 'bagages', 'destination', 'car', 'created_at', 'updated_at']
         
         
 class RegistrationSerializer(serializers.ModelSerializer):
