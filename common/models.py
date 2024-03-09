@@ -31,7 +31,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_number = models.IntegerField(default=0)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/user/')
     
     objects = CustomUserManager()
     
@@ -43,7 +43,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
 
 class Destination(models.Model):
-    id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
+    id = models.CharField(primary_key=True, unique=True, editable=False)
     start_at = models.CharField(max_length=50, default="")
     end_at = models.CharField(max_length=50,default="")
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
@@ -52,12 +52,22 @@ class Destination(models.Model):
         return str(self.id)
 
 
+   
+class Message(models.Model):
+    name = models.CharField(max_length=50)
+    contact = models.IntegerField(default=0)
+    message_content = models.TextField()
+    
+    def __str__(self):
+        return self.name
+
+
 class Customer(models.Model):
     first_phone_number = models.IntegerField(primary_key=True, editable=True, unique=True)
     second_phone_number = models.IntegerField(default=0)
     customer_name = models.CharField(max_length=150)
     cin = models.IntegerField(default=0)
-    seats = models.ManyToManyField(Seats)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
@@ -75,7 +85,7 @@ class Bagages(models.Model):
         When the weight of total bagages is set above 20kg,
         the customer gotta paid 1kg of each bagage to 500
     """
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, editable=False, unique=True, max_length=6, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
@@ -95,11 +105,11 @@ class Bagages(models.Model):
     
     
 class Driver(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, editable=False, max_length=6, unique=True, default=uuid.uuid4)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=250)
     phone_number = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/driver/')
     
     def __str__(self):
         return self.first_name
@@ -126,7 +136,7 @@ class Car(models.Model):
 """
 
 class Reservation(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, unique=True, default=uuid.uuid4)
+    id = models.IntegerField(primary_key=True, editable=False, unique=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
@@ -139,12 +149,11 @@ class Reservation(models.Model):
     
     
 class Registration(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
+    id = models.IntegerField(primary_key=True, editable=False, unique=True)
     user_validator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
-    seats = models.ForeignKey(Seats, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)
     upated_at = models.DateTimeField(auto_now=True)
@@ -152,12 +161,5 @@ class Registration(models.Model):
     def __str__(self):
         return str(self.customer)
     
-    
-class Message(models.Model):
-    name = models.CharField(max_length=50)
-    contact = models.IntegerField(default=0)
-    message_content = models.TextField()
-    
-    def __str__(self):
-        return self.name
+ 
 
