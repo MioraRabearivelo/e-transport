@@ -44,9 +44,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Destination(models.Model):
     id = models.CharField(primary_key=True, unique=True, editable=False)
-    start_at = models.CharField(max_length=50, default="")
-    end_at = models.CharField(max_length=50,default="")
+    start_in = models.CharField(max_length=50, default="")
+    end_in = models.CharField(max_length=50,default="")
+    start_at = models.DateTimeField()
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
+    
     
     def __str__(self):
         return str(self.id)
@@ -68,6 +70,7 @@ class Customer(models.Model):
     customer_name = models.CharField(max_length=150)
     cin = models.IntegerField(default=0)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
