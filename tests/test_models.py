@@ -49,5 +49,46 @@ class TestMessageModel:
         with pytest.raises(IntegrityError):
             Message.objects.create(
                 name='Same',
-                contact=545
+                contact=545,
+            )
+            
+            
+class TestCustomerModel:
+    
+    @pytest.fixture
+    def destination(self) -> Destination:
+        return Destination.objects.create(
+            id = 'Id1',
+        )
+
+    @pytest.fixture
+    def message(self) -> Message:
+        return Message.objects.create(
+            name='Same',
+            contact=251,
+            message_content='message_content',
+        )
+    
+    @pytest.mark.django_db
+    def test_create_costumer(self, destination, message):
+        contact_one = 14887
+        contact_two = 58966
+        
+        Customer.objects.create(
+            first_phone_number=contact_one,
+            second_phone_number=contact_two,
+            customer_name='Same',
+            destination=destination,
+            messages=message
+        )
+        
+        assert Customer.objects.count() == 1
+        
+   
+    @pytest.mark.django_db
+    def test_invalid_costumer(self):
+        with pytest.raises(IntegrityError):
+            Customer.objects.create(
+                first_phone_number=58966,
+                second_phone_number=58966,
             )
