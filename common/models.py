@@ -61,7 +61,7 @@ class Message(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.message_content:
-            raise ValidationError('message_content is required')
+            raise ValidationError('message content is required')
         elif not self.contact:
             raise ValidationError('Contact field is required')
         elif not self.name:
@@ -82,9 +82,9 @@ class Customer(models.Model):
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
-            return ValidationError('The second phone number must be diffrent the first phone number')
+            raise ValidationError('The second phone number must be diffrent the first phone number')
         elif not self.second_phone_number:
-            return ValidationError('This fileds is required')
+            raise ValidationError('This fileds is required')
         super().save(*args, **kwargs)
     
     def __str__(self):
@@ -160,7 +160,7 @@ class Registration(models.Model):
     upated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return str(self.customer)
+        return str(id)
     
  
 

@@ -2,11 +2,12 @@
 
 import pytest
 from django.db import IntegrityError
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 import uuid
 
-from common.models import CustomUser, Destination, Customer, Message, Bagages,\
-    Driver, Car
+from common.models import Destination, Customer, Message, Bagages,\
+    Driver, Car, Reservation
 
 
 class TestDestinationModel:
@@ -32,26 +33,27 @@ class TestDestinationModel:
 
 class TestMessageModel:
     
+    user_name = 'Same'
+    user_contact =  21545
+    message_content = 'Hello world'
+
     @pytest.mark.django_db
     def test_create_message(self):
-        user_name = 'Same'
-        user_contact =  21545
-        message_content = 'Hello world'
-
+        
         Message.objects.create(
-            name=user_name,
-            contact=user_contact,
-            message_content=message_content,
+            name=self.user_name,
+            contact=self.user_contact,
+            message_content=self.message_content,
         )
         
         assert Message.objects.count() == 1
     
     @pytest.mark.django_db
     def test_invalid_message(self):
-        with pytest.raises(IntegrityError):
+        with pytest.raises(ValidationError):
             Message.objects.create(
-                name='Same',
-                contact=545,
+                name=self.user_name,
+                contact=self.user_contact,
             )
             
             
@@ -88,12 +90,14 @@ class TestCustomerModel:
         
    
     @pytest.mark.django_db
-    def test_invalid_costumer(self):
+    def test_invalid_costumer(self, message):
         with pytest.raises(IntegrityError):
             Customer.objects.create(
                 first_phone_number=58966,
-                second_phone_number=58966,
-            )
+                second_phone_number=58,
+                customer_name='Same',
+                messages=message
+            ) 
             
 
 class TestBagagesModel:
@@ -153,9 +157,59 @@ class TestCarModel:
         assert Car.objects.count() == 1
         
     @pytest.mark.django_db
-    def test_invalid_car(self):
+    def test_invalid_car(self, driver):
         with pytest.raises(IntegrityError):
             Car.objects.create(
-                id='Same45',
-                driver='Same'
+                driver=driver
             )
+            
+
+class TestReservationModel:
+    
+    @pytest.fixture
+    def destination(self) -> Destination:
+        return Destination.objects.create(
+            id = 'Id1',
+        )
+    
+    @pytest.fixture
+    def driver(self) -> Driver:
+        return Driver.objects.create(
+            id='Same45'
+        )
+    
+    @pytest.fixture
+    def customer(self, destination) -> Customer:
+        return Customer.objects.create(
+            first_phone_number=256,
+            second_phone_number=587,
+            destination=destination
+        )
+        
+    @pytest.fixture
+    def car(self, destination, driver) -> Car:
+        return Car.objects.create(
+            car_number='T154',
+            destination=destination,
+            driver=driver
+        )
+    
+    
+    @pytest.mark.django_db
+    def test_create_reservation(self, customer, destination, car):
+        Reservation.objects.create(
+            customer=customer,
+            destination=destination,
+            car=car
+        )
+        
+        assert Reservation.objects.count() == 1
+        
+    @pytest.mark.django_db
+    def test_invalid_reservation(self, customer, destination):
+        with pytest.raises(IntegrityError):
+            Reservation.objects.create(
+                customer=customer,
+                destination=destination,
+            )
+            
