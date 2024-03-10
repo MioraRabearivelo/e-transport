@@ -1,9 +1,9 @@
 
 
-import json
 import uuid
-from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.db import models
 
 
 class CustomUserManager(BaseUserManager):
@@ -53,13 +53,21 @@ class Destination(models.Model):
     def __str__(self):
         return str(self.id)
 
-
    
 class Message(models.Model):
     name = models.CharField(max_length=50)
     contact = models.IntegerField(default=0)
     message_content = models.TextField()
     
+    def save(self, *args, **kwargs):
+        if not self.message_content:
+            raise ValidationError('message_content is required')
+        elif not self.contact:
+            raise ValidationError('Contact field is required')
+        elif not self.name:
+            raise ValidationError('User name field is required')
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
@@ -74,9 +82,9 @@ class Customer(models.Model):
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
-            return 'The second phone number must be diffrent the first phone number'
-        elif self.second_phone_number == 0 or None:
-            return 'This fileds is required'
+            return ValidationError('The second phone number must be diffrent the first phone number')
+        elif not self.second_phone_number:
+            return ValidationError('This fileds is required')
         super().save(*args, **kwargs)
     
     def __str__(self):
@@ -128,15 +136,6 @@ class Car(models.Model):
     def __str__(self):
         return self.car_number
     
-
-"""class Payment(models.Model):
-    ref = models.CharField(primary_key=True, editable=False, max_length=100)
-    payment_mode = models.CharField(max_length=30, default="")
-    status = models.BooleanField(default=False)
-    
-    def __str__(self):
-        return str(self.ref)
-"""
 
 class Reservation(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
