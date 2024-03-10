@@ -47,7 +47,7 @@ class Destination(models.Model):
     start_in = models.CharField(max_length=50, default="")
     end_in = models.CharField(max_length=50,default="")
     start_at = models.DateTimeField(auto_now_add=True)
-    costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
+    costs = models.DecimalField(max_digits=30, decimal_places=2, default=0.0)
     
     
     def __str__(self):
@@ -116,7 +116,7 @@ class Bagages(models.Model):
     
     
 class Driver(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False, max_length=6, unique=True, default=uuid.uuid4)
+    id = models.CharField(primary_key=True, editable=False, max_length=15, unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=250)
     phone_number = models.IntegerField(default=0)
@@ -127,7 +127,7 @@ class Driver(models.Model):
     
 
 class Car(models.Model):
-    car_number = models.CharField(primary_key=True, editable=True, unique=True, max_length=30)
+    car_number = models.CharField(primary_key=True, editable=False, unique=True, max_length=15)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     seats_total = models.IntegerField(default=32)
@@ -140,7 +140,7 @@ class Car(models.Model):
 class Reservation(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
+    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE, null=True, blank=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
