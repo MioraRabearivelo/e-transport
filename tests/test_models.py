@@ -5,7 +5,8 @@ from django.db import IntegrityError
 from django.utils import timezone
 import uuid
 
-from common.models import CustomUser, Destination, Customer, Message, Bagages
+from common.models import CustomUser, Destination, Customer, Message, Bagages,\
+    Driver, Car
 
 
 class TestDestinationModel:
@@ -104,14 +105,13 @@ class TestBagagesModel:
         )
     
     @pytest.fixture
-    def customer(self, destination):
+    def customer(self, destination) -> Customer:
         return Customer.objects.create(
             first_phone_number=256,
             second_phone_number=587,
             destination=destination
         )
         
-    
     @pytest.mark.django_db
     def test_create_bagage(self, customer):
         Bagages.objects.create(
@@ -126,4 +126,36 @@ class TestBagagesModel:
         with pytest.raises(IntegrityError):
             Bagages.objects.create(
                 id=uuid.uuid4()
+            )
+            
+            
+class TestCarModel:
+    
+    @pytest.fixture
+    def driver(self) -> Driver:
+        return Driver.objects.create(
+            id='Same45'
+        )
+    
+    @pytest.fixture
+    def destination(self) -> Destination:
+        return Destination.objects.create(
+            id = 'Id1',
+        )
+    
+    @pytest.mark.django_db
+    def test_create_car(self, destination, driver):
+        Car.objects.create(
+            driver=driver,
+            destination=destination
+        )
+        
+        assert Car.objects.count() == 1
+        
+    @pytest.mark.django_db
+    def test_invalid_car(self):
+        with pytest.raises(IntegrityError):
+            Car.objects.create(
+                id='Same45',
+                driver='Same'
             )

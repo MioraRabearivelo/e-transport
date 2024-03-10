@@ -119,7 +119,7 @@ class Driver(models.Model):
     id = models.CharField(primary_key=True, editable=False, max_length=15, unique=True)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=250)
-    phone_number = models.IntegerField(default=0)
+    phone_number = models.IntegerField(default=0, editable=True)
     image = models.ImageField(upload_to='images/driver/')
     
     def __str__(self):
@@ -130,7 +130,7 @@ class Car(models.Model):
     car_number = models.CharField(primary_key=True, editable=False, unique=True, max_length=15)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    seats_total = models.IntegerField(default=32)
+    chair_total = models.IntegerField(default=32)
     description = models.TextField(default="", null=True, blank=True)
     
     def __str__(self):
