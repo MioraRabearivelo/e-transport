@@ -43,7 +43,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
 
 class Destination(models.Model):
-    id = models.CharField(primary_key=True, unique=True, editable=False)
+    id = models.CharField(primary_key=True, max_length=10, unique=True, editable=False)
     start_in = models.CharField(max_length=50, default="")
     end_in = models.CharField(max_length=50,default="")
     start_at = models.DateTimeField()
@@ -70,7 +70,7 @@ class Customer(models.Model):
     customer_name = models.CharField(max_length=150)
     cin = models.IntegerField(default=0)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
+    messages = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
     
     def save(self, *args, **kwargs):
         if self.second_phone_number == self.first_phone_number:
@@ -155,7 +155,6 @@ class Registration(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
     user_validator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now_add=True)

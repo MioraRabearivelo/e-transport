@@ -21,7 +21,7 @@ class CustomerUserAdmin(admin.ModelAdmin):
     ordering = ('first_phone_number',)
     search_fields = ('customer_name',)
     list_display = [
-        'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'display_seats'
+        'first_phone_number', 'second_phone_number', 'customer_name', 'cin', 'destination', 'messages'
     ]
     
 admin.site.register(Customer, CustomerUserAdmin)
@@ -32,7 +32,7 @@ class DestinationAdmin(admin.ModelAdmin):
     ordering = ('id',)
     search_fields = ('end_at',)
     list_display = [
-        'id', 'start_at', 'end_at', 'costs'
+        'id', 'start_at', 'end_in', 'start_in', 'costs'
     ]
 
 admin.site.register(Destination, DestinationAdmin)
@@ -87,7 +87,7 @@ class RegistrationAdmin(admin.ModelAdmin):
     ordering = ('id',)
     search_fields = ('customer',)
     list_display = [
-        'id', 'reservation','car', 'seats', 'bagages', 'customer',
+        'id', 'reservation','car', 'bagages', 'user_validator',
         'create_at', 'upated_at'
     ]
 

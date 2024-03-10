@@ -2,8 +2,7 @@
 
 from django.urls import path
 
-from .views import DestinationApiMixin, ListSeats, CreateSeats,\
-    ListDriver
+from .views import DestinationApiMixin, ListDriver
 
 urlpatterns = [
     path('destiantion/<str:pk>/detail',   DestinationApiMixin.as_view()),
