@@ -3,8 +3,9 @@
 import pytest
 from django.db import IntegrityError
 from django.utils import timezone
+import uuid
 
-from common.models import CustomUser, Destination, Customer, Message
+from common.models import CustomUser, Destination, Customer, Message, Bagages
 
 
 class TestDestinationModel:
@@ -91,4 +92,38 @@ class TestCustomerModel:
             Customer.objects.create(
                 first_phone_number=58966,
                 second_phone_number=58966,
+            )
+            
+
+class TestBagagesModel:
+    
+    @pytest.fixture
+    def destination(self) -> Destination:
+        return Destination.objects.create(
+            id = 'Id1',
+        )
+    
+    @pytest.fixture
+    def customer(self, destination):
+        return Customer.objects.create(
+            first_phone_number=256,
+            second_phone_number=587,
+            destination=destination
+        )
+        
+    
+    @pytest.mark.django_db
+    def test_create_bagage(self, customer):
+        Bagages.objects.create(
+            id=uuid.uuid4(),
+            customer=customer
+        )
+    
+        assert Bagages.objects.count() == 1
+    
+    @pytest.mark.django_db
+    def test_invalid_bagage(self):
+        with pytest.raises(IntegrityError):
+            Bagages.objects.create(
+                id=uuid.uuid4()
             )
