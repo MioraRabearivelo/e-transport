@@ -46,7 +46,7 @@ class Destination(models.Model):
     id = models.CharField(primary_key=True, max_length=10, unique=True, editable=False)
     start_in = models.CharField(max_length=50, default="")
     end_in = models.CharField(max_length=50,default="")
-    start_at = models.DateTimeField()
+    start_at = models.DateTimeField(auto_now_add=True)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     
     
