@@ -33,7 +33,7 @@ class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
         fields = ['first_name', 'last_name', 'phone_number', 'image']
-        
+
 
 class CarSerializer(serializers.ModelSerializer):
 
@@ -41,14 +41,6 @@ class CarSerializer(serializers.ModelSerializer):
         model = Car
         fields = ['car_number', 'destination', 'driver',  'description', 'bagages', 'customer']
 
-
-"""class Paymentserializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Payment
-        fields = ['ref', 'payment_mode', 'status']
-        """
-        
 class ReservationSerializer(serializers.ModelSerializer):
     
     class Meta:
