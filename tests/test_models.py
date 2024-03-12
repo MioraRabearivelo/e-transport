@@ -32,7 +32,6 @@ class TestDestinationModel:
 
 
 class TestMessageModel:
-    
     user_name = 'Same'
     user_contact =  21545
     message_content = 'Hello world'

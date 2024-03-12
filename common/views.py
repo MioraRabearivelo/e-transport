@@ -1,11 +1,22 @@
 
 
+from django.core.exceptions import ValidationError
 from rest_framework import generics, mixins
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
-from .models import Destination, Driver, Reservation, Registration, Message, Car
+from .models import Destination, Driver, Reservation, Registration, Message, Car, User
 from .serializer import DestinationSerializer,  DriverSerializer, ReservationSerializer,\
-    RegistrationSerializer, MessageSerializer, CarSerializer
+    RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
+
+
+class Registration(APIView):
+    
+    def post(self, request):
+        serializer = AccountSerializer(data=request.data)
+        if serializer.is_valid():
+            return serializer.save()
+        return ValidationError('An error occured during registration')
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
@@ -24,7 +35,7 @@ class DestinationApiMixin(generics.GenericAPIView,
         end_date =  serializer.validated_data.get('end_date')
         costs =  serializer.validated_data.get('costs')
         if start_date or end_date or costs is None:
-            raise ValueError("Start date fields is required")
+            raise ValidationError("Start date fields is required")
         serializer.save()
             
     def perform_update(self, serializer):
@@ -32,11 +43,11 @@ class DestinationApiMixin(generics.GenericAPIView,
         end_date =  serializer.validated_data.get('end_date')
         costs =  serializer.validated_data.get('costs')
         if start_date is None:
-            raise ValueError("Start date fields is required")
+            raise ValidationError("Start date fields is required")
         elif end_date is None:
-            raise ValueError("End date fields is required")
+            raise ValidationError("End date fields is required")
         elif costs is None:
-            raise ValueError("Cost fields is required")
+            raise ValidationError("Cost fields is required")
         else:
             serializer.save()
             
@@ -71,7 +82,7 @@ class CreateDriver(generics.CreateAPIView):
         image = serializer.validated_data.get('image')
         
         if first_name or last_name or phone_number or image is None:
-            raise ValueError("All fields is required") 
+            raise ValidationError("All fields is required") 
         serializer.save()
         
     def post(self, request, *args, **kwargs):
@@ -114,7 +125,7 @@ class UpdateDriver(generics.UpdateAPIView):
         image = serializer.validated_data.get('image')
         
         if first_name or last_name or phone_number or image is None:
-            raise ValueError("All fields is required") 
+            raise ValidationError("All fields is required") 
         serializer.save()
         
     def put(self, request, *args, **kwargs):
@@ -144,7 +155,7 @@ class CreateReservation(generics.CreateAPIView):
         destination = serializer.validated_data.get('destination')
 
         if customer or destination  is None:
-            raise ValueError("All fields is required") 
+            raise ValidationError("All fields is required") 
         serializer.save()
         
     def post(self, request, *args, **kwargs):
@@ -162,7 +173,7 @@ class UpdateResevation(generics.UpdateAPIView):
         destination = serializer.validated_data.get('destination')
         
         if customer or destination  is None:
-            raise ValueError("All fields is required") 
+            raise ValidationError("All fields is required") 
         serializer.save()
         
     def put(self, request, *args, **kwargs):
