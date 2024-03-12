@@ -8,7 +8,7 @@ from .models import Destination,  Customer, Bagages, Driver,  \
     Reservation, Registration, Message, Car, User
 
 
-class RegisterSerializer(serializers.ModelSerializer):
+class AccountSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
             required=True,
             validators=[UniqueValidator(queryset=User.objects.all())]
