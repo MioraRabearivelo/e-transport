@@ -39,7 +39,7 @@ class UserLoginView(ObtainAuthToken):
             if created:
                 token.delete()  
                 token = Token.objects.create(user=user)
-            return Response({'token': token.key, 'username': user.username, 'role': user.role})
+            return Response({'token': token.key, 'username': user.username})
         else:
             return Response({'message': 'Invalid username or password'})
 
