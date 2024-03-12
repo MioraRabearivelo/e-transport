@@ -1,16 +1,21 @@
 
 
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate, login
+
 from rest_framework import generics, mixins
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
 
-from .models import Destination, Driver, Reservation, Registration, Message, Car, User
+from .models import Destination, Driver, Reservation, Registration, Message, Car
 from .serializer import DestinationSerializer,  DriverSerializer, ReservationSerializer,\
     RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
 
 
-class RegistrationUser(APIView):
+class UserRegistratio(APIView):
     
     permission_classes = [IsAdminUser]
     
@@ -19,6 +24,36 @@ class RegistrationUser(APIView):
         if serializer.is_valid():
             return serializer.save()
         return ValidationError('An error occured during registration')
+
+
+
+class UserLoginView(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            token, created = Token.objects.get_or_create(user=user)
+            if created:
+                token.delete()  
+                token = Token.objects.create(user=user)
+            return Response({'token': token.key, 'username': user.username, 'role': user.role})
+        else:
+            return Response({'message': 'Invalid username or password'})
+
+
+class UserLogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        print(request.headers) 
+        token_key = request.auth.key
+        token = Token.objects.get(key=token_key)
+        token.delete()
+
+        return Response({'detail': 'Successfully logged out.'})
 
 
 class DestinationApiMixin(generics.GenericAPIView, 
