@@ -10,7 +10,9 @@ from .serializer import DestinationSerializer,  DriverSerializer, ReservationSer
     RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
 
 
-class Registration(APIView):
+class RegistrationUser(APIView):
+    
+    permission_classes = [IsAdminUser]
     
     def post(self, request):
         serializer = AccountSerializer(data=request.data)
