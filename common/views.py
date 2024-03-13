@@ -15,7 +15,7 @@ from .serializer import DestinationSerializer,  DriverSerializer, ReservationSer
     RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
 
 
-class UserRegistratio(APIView):
+class UserRegistration(APIView):
     
     permission_classes = [IsAdminUser]
     

@@ -101,8 +101,8 @@ class Driver(models.Model):
 
 class Car(models.Model):
     car_number = models.CharField(primary_key=True, editable=False, unique=True, max_length=15)
-    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    destinations = models.ManyToManyField(Destination)
+    drivers= models.ManyToManyField(Driver)
     chair_total = models.IntegerField(default=32)
     description = models.TextField(default="", null=True, blank=True)
     
@@ -113,7 +113,7 @@ class Car(models.Model):
 class Reservation(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE, null=True, blank=True)
+    bagages = models.ForeignKey(Bagages, null=True, blank=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
