@@ -74,10 +74,12 @@ class DriverSerializer(serializers.ModelSerializer):
 
 
 class CarSerializer(serializers.ModelSerializer):
-
+    
+    drivers = DriverSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Car
-        fields = ['car_number', 'destination', 'driver',  'description', 'bagages', 'customer']
+        fields = ['car_number', 'destination', 'drivers',  'description', 'bagages', 'customer']
 
 class ReservationSerializer(serializers.ModelSerializer):
     
