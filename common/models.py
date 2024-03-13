@@ -12,7 +12,7 @@ class User(AbstractUser):
     image = models.ImageField(upload_to='images/user/')
 
     def __str__(self):
-        return self.user.username
+        return self.user
 
 
 class Destination(models.Model):
