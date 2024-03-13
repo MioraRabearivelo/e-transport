@@ -5,15 +5,15 @@ from .models import CustomUser, Customer, Destination, Bagages,\
     Driver, Car, Reservation, Registration, Message
     
     
-class CustomUserAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     model = CustomUser
-    ordering = ('pseudo',)
-    search_fields = ('pseudo',)
+    ordering = ('user',)
+    search_fields = ('user',)
     list_display = [
-        'email', 'phone_number', 'pseudo', 'first_name', 'last_name'
+        'user', 'phone_number','image'
     ]
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser, UserAdmin)
 
 
 class CustomerUserAdmin(admin.ModelAdmin):
@@ -65,7 +65,7 @@ class CarAdmin(admin.ModelAdmin):
     ordering = ('car_number',)
     search_fields = ('car_number',)
     list_display = [
-        'car_number', 'driver', 'destination', 'seats_total'
+        'car_number', 'chair_total', 'description'
     ]
 
 admin.site.register(Car, CarAdmin)

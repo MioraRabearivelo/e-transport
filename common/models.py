@@ -1,18 +1,20 @@
 
 
 import uuid
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import AbstractUser
 
+User = settings.AUTH_USER_MODEL
 
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.IntegerField()
     image = models.ImageField(upload_to='images/user/')
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 class Destination(models.Model):
@@ -113,7 +115,7 @@ class Car(models.Model):
 class Reservation(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    bagages = models.ForeignKey(Bagages, null=True, blank=True)
+    bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE, null=True, blank=True)
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -125,7 +127,7 @@ class Reservation(models.Model):
     
 class Registration(models.Model):
     id = models.IntegerField(primary_key=True, editable=False, unique=True)
-    user_validator = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_validator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     bagages = models.ForeignKey(Bagages, on_delete=models.CASCADE)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
