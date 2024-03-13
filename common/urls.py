@@ -10,5 +10,6 @@ urlpatterns = [
     path('destiantion/<str:pk>/delete',   DestinationApiMixin.as_view()),
     path('destiantion/list/',   DestinationApiMixin.as_view()),
     path('destiantion/create/',   DestinationApiMixin.as_view()),
-    path('driver/list_drivers/', ListDriver.as_view())
+    path('driver/list_drivers/', ListDriver.as_view(), name='list-driver'),
+    path('driver/detail_drivers/<str:pk>/', ListDriver.as_view(), name='detail-driver')
 ]

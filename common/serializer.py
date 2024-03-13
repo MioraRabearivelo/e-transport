@@ -47,7 +47,7 @@ class DestinationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Destination
-        fields = ['id', 'start_at', 'end_at', 'costs']     
+        fields = ['id', 'start_in', 'start_at', 'end_in', 'costs']     
 
 
 class CustomerSerializer(serializers.ModelSerializer):
@@ -66,9 +66,11 @@ class BagagesSerializer(serializers.ModelSerializer):
 
 class DriverSerializer(serializers.ModelSerializer):
     
+    url = serializers.HyperlinkedIdentityField(view_name='detail-driver', lookup_field='id')
+    
     class Meta:
         model = Driver
-        fields = ['first_name', 'last_name', 'phone_number', 'image']
+        fields = ['url', 'id', 'first_name', 'last_name', 'phone_number', 'image']
 
 
 class CarSerializer(serializers.ModelSerializer):
