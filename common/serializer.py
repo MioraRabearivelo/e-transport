@@ -15,18 +15,18 @@ class AccountSerializer(serializers.ModelSerializer):
             )
 
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
+    confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email', 'password', 'password2',  'image')
+        fields = ('first_name', 'last_name', 'email', 'password', 'confirm_password',  'image')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
         }
 
     def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
+        if attrs['password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
         return attrs 
 
@@ -88,14 +88,14 @@ class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fileds = ['customer', 'bagages', 'destination', 'car', 'created_at', 'updated_at']
-        
-        
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Registration
         fields = ['user_validator', 'reservation', 'customer', 'bagages', 'seats', 'car', 'create_at', 'upated_at']
-        
+     
 
 class MessageSerializer(serializers.ModelSerializer):
     
