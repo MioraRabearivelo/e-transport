@@ -94,17 +94,6 @@ class RegistrationAdmin(admin.ModelAdmin):
 admin.site.register(Registration,RegistrationAdmin)
 
 
-"""class PaymentAdmin(admin.ModelAdmin):
-    model = Payment
-    ordering = ('ref',)
-    search_fields = ('payment_mode',)
-    list_display = [
-        'ref', 'payment_mode'
-    ]
-
-admin.site.register(Payment, PaymentAdmin)"""
-
-
 class MessageAdmin(admin.ModelAdmin):
     model = Message
     ordering = ('name',)
