@@ -70,16 +70,18 @@ class DriverSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Driver
-        fields = ['url', 'id', 'first_name', 'last_name', 'phone_number', 'image']
+        fields = ['id', 'url', 'first_name', 'last_name', 'phone_number', 'image']
 
 
 class CarSerializer(serializers.ModelSerializer):
     
     drivers = DriverSerializer(many=True, read_only=True)
+    description = serializers.HyperlinkedIdentityField(view_name='detail-car' , read_only=True)
     
     class Meta:
         model = Car
-        fields = ['car_number', 'destination', 'drivers',  'description', 'bagages', 'customer']
+        fields = ['car_number', 'destinations', 'drivers',  'description', 'bagages', 'customer']
+        
 
 class ReservationSerializer(serializers.ModelSerializer):
     
