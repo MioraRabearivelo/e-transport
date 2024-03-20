@@ -28,7 +28,7 @@ class AccountSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
-        return attrs 
+        return attrs
 
     def create(self, validated_data):
         user = CustomUser.objects.create(
@@ -61,7 +61,7 @@ class BagagesSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Bagages
-        fields = ['customer', 'weigth', 'costs', 'bagage_name', 'description']
+        fields = ['customer', 'weigth', 'costs', 'bagage_name', 'get_weight', 'description']
 
 
 class DriverSerializer(serializers.ModelSerializer):
@@ -79,6 +79,7 @@ class CarSerializer(serializers.ModelSerializer):
     description = serializers.HyperlinkedIdentityField(view_name='detail-car' , read_only=True)
     
     class Meta:
+        
         model = Car
         fields = ['car_number', 'destinations', 'drivers',  'description', 'bagages', 'customer']
         

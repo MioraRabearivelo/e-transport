@@ -70,6 +70,7 @@ class CarAdmin(admin.ModelAdmin):
 
 admin.site.register(Car, CarAdmin)
 
+
 class ReservationAdmin(admin.ModelAdmin):
     model = Reservation
     ordering = ('customer',)

@@ -82,8 +82,8 @@ class Bagages(models.Model):
     def get_weight(self):
         if self.weigth <= 20:
             self.costs = 0.0
-        else:
-            self.costs = self.weigth * 500 
+        self.costs = self.weigth * 500 
+        
         return self.costs 
     
     def __str__(self):
