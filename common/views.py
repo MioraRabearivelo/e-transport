@@ -348,3 +348,20 @@ class DeleteCar(generics.DestroyAPIView):
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
     
+    
+class UpdateCar(generics.UpdateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+    
+    def perform_update(self, serializer):
+        car_number = serializer.validated_data.get('car_number')
+        destination = serializer.validated_data.get('destination')
+        
+        if car_number or destination is None:
+            raise ValueError("All fields is required") 
+        serializer.save()
+        
+    def put(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)

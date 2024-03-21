@@ -33,4 +33,5 @@ urlpatterns = [
     path('car/create', CreateCar.as_view()),
     path('car/list', ListCar.as_view()),
     path('car/<str:pk>/update', UpdateCar.as_view()),
-    path('car/<str:pk>/delete', DeleteCar.as_view())
+    path('car/<str:pk>/delete', DeleteCar.as_view()),
+]
