@@ -3,7 +3,8 @@
 from django.urls import path
 
 from .views import DestinationApiMixin, ListDriver, CreateDriver, UpdateDriver, DeleteDriver, UserRegistration,\
-UserLoginView, CreateReservation, ListReservation, UpdateResevation, DeleteReservation
+    UserLoginView, CreateReservation, ListReservation, UpdateResevation, DeleteReservation, CreateMessage, \
+    ListMessage, DeleteMessage, ListRegistration, UpdateRegistration, DeleteRegistration
 
 urlpatterns = [
     path('destiantion/<str:pk>/detail',   DestinationApiMixin.as_view()),
@@ -22,4 +23,10 @@ urlpatterns = [
     path('reservation/list', ListReservation.as_view()),
     path('reservation/<str:pk>/update', UpdateResevation.as_view()),
     path('reservation/<str:pk>/delete', DeleteReservation.as_view()),
+    path('registration/list', ListRegistration.as_view()),
+    path('registration/<str:pk>/update', UpdateRegistration.as_view()),
+    path('registration/<str:pk>/delete', DeleteRegistration.as_view()),
+     path('message/create/', CreateMessage.as_view()),
+    path('message/list', ListMessage.as_view()),
+    path('message/<str:pk>/delete', DeleteMessage.as_view()),
 ]
