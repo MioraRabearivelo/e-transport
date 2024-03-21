@@ -141,4 +141,19 @@ class Registration(models.Model):
         return str(id)
     
  
+class Packages(models.Model):
+    id = models.UUIDField(primary_key=True, editable=False, unique=True, max_length=6, default=uuid.uuid4)
+    sender_name = models.CharField(max_length=150)
+    receiver_name = models.CharField(max_length=150)
+    sender_number = models.IntegerField(default=0)
+    receiver_number = models.IntegerField(default=0)
+    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
+    costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
+    packages_name = models.CharField(max_length=50, default="")
+    description = models.TextField(null=True, blank=True, default="") 
+    
+    def __str__(self) -> str:
+        return str(self.id)
+ 
 
