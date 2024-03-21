@@ -300,6 +300,16 @@ class ListMessage(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
 
 
+class DeleteMessage(generics.DestroyAPIView):
+    queryset = Message.objects.all()
+    serializer_class =MessageSerializer
+    permission_classes = [IsAuthenticated]
+    lookup_field = ['id']
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+    
+
 class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
