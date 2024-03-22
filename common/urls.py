@@ -5,7 +5,7 @@ from django.urls import path
 from .views import DestinationApiMixin, ListDriver, CreateDriver, UpdateDriver, DeleteDriver, UserRegistration,\
     UserLoginView, CreateReservation, ListReservation, UpdateResevation, DeleteReservation, CreateMessage, \
     ListMessage, DeleteMessage, ListRegistration, UpdateRegistration, DeleteRegistration, CreateCar, \
-    UpdateCar, ListCar, DeleteCar, CreatePackages
+    UpdateCar, ListCar, DeleteCar, CreatePackages, ListPackages
 
 urlpatterns = [
     path('destiantion/<str:pk>/detail',   DestinationApiMixin.as_view()),
@@ -35,4 +35,5 @@ urlpatterns = [
     path('car/<str:pk>/update', UpdateCar.as_view()),
     path('car/<str:pk>/delete', DeleteCar.as_view()),
     path('packages/create', CreatePackages.as_view()),
+    path('packages/list', ListPackages.as_view()),
 ]
