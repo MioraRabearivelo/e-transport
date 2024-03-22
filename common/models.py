@@ -150,7 +150,7 @@ class Packages(models.Model):
     destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     costs = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
-    packages_name = models.CharField(max_length=50, default="")
+    packages_name = models.CharField(max_length=300, default="")
     description = models.TextField(null=True, blank=True, default="") 
     
     def __str__(self) -> str:
