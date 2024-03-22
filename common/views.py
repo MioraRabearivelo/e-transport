@@ -396,3 +396,12 @@ class ListPackages(generics.ListCreateAPIView, generics.RetrieveAPIView):
         if pk is not None:
             return self.retrieve(request, *args, **kwargs)
         return self.list(request, *args, **kwargs)
+
+
+class DeletePackages(generics.DestroyAPIView):
+    queryset = Packages.objects.all()
+    serializer_class = PackagesSerializer
+    lookup_field = ['id']
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
