@@ -10,9 +10,9 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
-from .models import Destination, Driver, Reservation, Registration, Message, Car
+from .models import Destination, Driver, Reservation, Registration, Message, Car, Packages
 from .serializer import DestinationSerializer,  DriverSerializer, ReservationSerializer,\
-    RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
+    RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer, PackagesSerializer
     
 
 class UserRegistration(APIView):
@@ -363,3 +363,24 @@ class UpdateCar(generics.UpdateAPIView):
         
     def put(self, request, *args, **kwargs):
         return self.put(request, *args, **kwargs)
+    
+
+class CreatePackages(generics.CreateAPIView):
+    queryset = Packages.objects.all() 
+    serializer_class =PackagesSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def perform_create(self, serializer):
+        sender_number = serializer.validated_data.get('sender_number')
+        receiver_number = serializer.validated_data.get('receiver_number')
+        sender_name = serializer.validated_data.get('sender_name')
+        receiver_name = serializer.validated_data.get('message_content')
+        weigth = serializer.validated_data.get('weigth')
+        packages_name = serializer.validated_data.get('packages_name')
+
+        if sender_number or receiver_number or  receiver_name or sender_name is None:
+            raise ValueError("All fields is required") 
+        serializer.save()
+        
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
