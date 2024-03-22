@@ -15,7 +15,6 @@ from .serializer import DestinationSerializer,  DriverSerializer, ReservationSer
     RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer
     
 
-
 class UserRegistration(APIView):
     
     permission_classes = [IsAdminUser]
@@ -25,7 +24,6 @@ class UserRegistration(APIView):
         if serializer.is_valid():
             return serializer.save()
         return ValidationError('An error occured during registration')
-
 
 
 class UserLoginView(ObtainAuthToken):

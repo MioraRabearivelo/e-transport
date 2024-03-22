@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 from .models import Destination,  Customer, Bagages, Driver,  \
-    Reservation, Registration, Message, Car, CustomUser
+    Reservation, Registration, Message, Car, CustomUser, Packages
 
 
 class AccountSerializer(serializers.ModelSerializer):
@@ -103,3 +103,12 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['name', 'contact', 'message_content']
+        
+        
+class PackagesSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Packages
+        fields = ['sender_name', 'receiver_name', 'sender_number', 'receiver_number', 'destination', 'weigth',
+            'costs', 'packages_name', 'description'
+        ]
