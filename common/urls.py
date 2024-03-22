@@ -8,9 +8,9 @@ from .views import DestinationApiMixin, ListDriver, CreateDriver, UpdateDriver, 
     UpdateCar, ListCar, DeleteCar, CreatePackages, ListPackages
 
 urlpatterns = [
-    path('destiantion/<str:pk>/detail',   DestinationApiMixin.as_view()),
-    path('destiantion/<str:pk>/update',   DestinationApiMixin.as_view()),
-    path('destiantion/<str:pk>/delete',   DestinationApiMixin.as_view()),
+    path('destiantion/<str:pk>/detail', DestinationApiMixin.as_view()),
+    path('destiantion/<str:pk>/update', DestinationApiMixin.as_view()),
+    path('destiantion/<str:pk>/delete', DestinationApiMixin.as_view()),
     path('destiantion/list',   DestinationApiMixin.as_view()),
     path('destiantion/create',   DestinationApiMixin.as_view()),
     path('driver/list-drivers', ListDriver.as_view()),
