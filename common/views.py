@@ -384,3 +384,15 @@ class CreatePackages(generics.CreateAPIView):
         
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+class ListPackages(generics.ListCreateAPIView, generics.RetrieveAPIView):
+    queryset = Packages.objects.all()
+    serializer_class = PackagesSerializer
+    lookup_field = ['id']
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get(self.pk)
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
