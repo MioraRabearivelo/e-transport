@@ -375,8 +375,6 @@ class CreatePackages(generics.CreateAPIView):
         receiver_number = serializer.validated_data.get('receiver_number')
         sender_name = serializer.validated_data.get('sender_name')
         receiver_name = serializer.validated_data.get('message_content')
-        weigth = serializer.validated_data.get('weigth')
-        packages_name = serializer.validated_data.get('packages_name')
 
         if sender_number or receiver_number or  receiver_name or sender_name is None:
             raise ValueError("All fields is required") 
