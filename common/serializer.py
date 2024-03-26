@@ -44,10 +44,15 @@ class AccountSerializer(serializers.ModelSerializer):
 
 
 class DestinationSerializer(serializers.ModelSerializer):
-
+    
+    id_destiantion = serializers.SerializerMethodField('get_id_destiantion')
+    
     class Meta:
         model = Destination
-        fields = ['id', 'start_in', 'start_at', 'end_in', 'costs']     
+        fields = ['id_destiantion', 'start_in', 'start_at', 'end_in', 'costs']     
+        
+    def get_id_destiantion(self, obj):
+        return obj.get_id
 
 
 class CustomerSerializer(serializers.ModelSerializer):
