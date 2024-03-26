@@ -45,7 +45,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
 class DestinationSerializer(serializers.ModelSerializer):
     
-    id_destiantion = serializers.SerializerMethodField('get_id_destiantion')
+    id_destiantion = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Destination
