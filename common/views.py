@@ -15,7 +15,7 @@ from .serializer import DestinationSerializer,  DriverSerializer, ReservationSer
     RegistrationSerializer, MessageSerializer, CarSerializer, AccountSerializer, PackagesSerializer
     
 
-class UserRegistration(APIView):
+class UserRegistrationView(APIView):
     
     permission_classes = [IsAdminUser]
     
@@ -106,7 +106,7 @@ class DestinationApiMixin(generics.GenericAPIView,
         return self.patch(request, *args, **kwargs)
     
     
-class CreateDriver(generics.CreateAPIView):
+class CreateDriverView(generics.CreateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -125,7 +125,7 @@ class CreateDriver(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
 
-class DeleteDriver(generics.DestroyAPIView):
+class DeleteDriverView(generics.DestroyAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -135,7 +135,7 @@ class DeleteDriver(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListDriver(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListDriverView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAuthenticated]
@@ -148,7 +148,7 @@ class ListDriver(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
     
     
-class UpdateDriver(generics.UpdateAPIView):
+class UpdateDriverView(generics.UpdateAPIView):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
     permission_classes = [IsAdminUser]
@@ -168,7 +168,7 @@ class UpdateDriver(generics.UpdateAPIView):
         return self.put(request, *args, **kwargs)
     
     
-class ListReservation(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListReservationView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Reservation.objects.all() 
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -181,7 +181,7 @@ class ListReservation(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
     
 
-class CreateReservation(generics.CreateAPIView):
+class CreateReservationView(generics.CreateAPIView):
     queryset = Reservation.objects.all() 
     serializer_class = ReservationSerializer
     lookup_field =['id']
@@ -198,7 +198,7 @@ class CreateReservation(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
     
-class UpdateResevation(generics.UpdateAPIView):
+class UpdateResevationView(generics.UpdateAPIView):
     queryset = Reservation.objects.all()
     serializer_class =ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -216,7 +216,7 @@ class UpdateResevation(generics.UpdateAPIView):
         return self.put(request, *args, **kwargs)
     
 
-class DeleteReservation(generics.DestroyAPIView):
+class DeleteReservationView(generics.DestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
@@ -226,7 +226,7 @@ class DeleteReservation(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListRegistration(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListRegistrationView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [IsAuthenticated]
@@ -239,7 +239,7 @@ class ListRegistration(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
     
     
-class UpdateRegistration(generics.UpdateAPIView):
+class UpdateRegistrationView(generics.UpdateAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [IsAuthenticated]
@@ -258,7 +258,7 @@ class UpdateRegistration(generics.UpdateAPIView):
         return self.put(request, *args, **kwargs)
 
 
-class DeleteRegistration(generics.DestroyAPIView):
+class DeleteRegistrationView(generics.DestroyAPIView):
     queryset = Registration.objects.all()
     serializer_class = RegistrationSerializer
     permission_classes = [IsAuthenticated]
@@ -268,7 +268,7 @@ class DeleteRegistration(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class CreateMessage(generics.CreateAPIView):
+class CreateMessageView(generics.CreateAPIView):
     queryset = Message.objects.all() 
     serializer_class =MessageSerializer
     
@@ -285,7 +285,7 @@ class CreateMessage(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
     
-class ListMessage(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListMessageView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [IsAuthenticated]
@@ -298,7 +298,7 @@ class ListMessage(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class DeleteMessage(generics.DestroyAPIView):
+class DeleteMessageView(generics.DestroyAPIView):
     queryset = Message.objects.all()
     serializer_class =MessageSerializer
     permission_classes = [IsAuthenticated]
@@ -308,7 +308,7 @@ class DeleteMessage(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
 
-class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListCarView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     lookup_field = ['id']
@@ -320,7 +320,7 @@ class ListCar(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class CreateCar(generics.CreateAPIView):
+class CreateCarView(generics.CreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
@@ -337,7 +337,7 @@ class CreateCar(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
     
 
-class DeleteCar(generics.DestroyAPIView):
+class DeleteCarView(generics.DestroyAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [IsAdminUser]
@@ -347,7 +347,7 @@ class DeleteCar(generics.DestroyAPIView):
         return self.destroy(request, *args, **kwargs)
     
     
-class UpdateCar(generics.UpdateAPIView):
+class UpdateCarView(generics.UpdateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [IsAuthenticated]
@@ -365,7 +365,7 @@ class UpdateCar(generics.UpdateAPIView):
         return self.put(request, *args, **kwargs)
     
 
-class CreatePackages(generics.CreateAPIView):
+class CreatePackagesView(generics.CreateAPIView):
     queryset = Packages.objects.all() 
     serializer_class =PackagesSerializer
     permission_classes = [IsAuthenticated]
@@ -384,7 +384,7 @@ class CreatePackages(generics.CreateAPIView):
         return self.create(request, *args, **kwargs)
 
 
-class ListPackages(generics.ListCreateAPIView, generics.RetrieveAPIView):
+class ListPackagesView(generics.ListCreateAPIView, generics.RetrieveAPIView):
     queryset = Packages.objects.all()
     serializer_class = PackagesSerializer
     lookup_field = ['id']
@@ -396,7 +396,7 @@ class ListPackages(generics.ListCreateAPIView, generics.RetrieveAPIView):
         return self.list(request, *args, **kwargs)
 
 
-class DeletePackages(generics.DestroyAPIView):
+class DeletePackagesView(generics.DestroyAPIView):
     queryset = Packages.objects.all()
     serializer_class = PackagesSerializer
     lookup_field = ['id']

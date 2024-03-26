@@ -28,7 +28,6 @@ class Destination(models.Model):
         self.id = f"{self.start_in[:4].upper()}-{self.end_in[:4].upper()}"
         return self.id
         
-        
     def __str__(self):
         return str(self.id)
 
