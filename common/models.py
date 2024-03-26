@@ -24,7 +24,11 @@ class Destination(models.Model):
     start_at = models.DateTimeField(auto_now_add=True)
     costs = models.DecimalField(max_digits=30, decimal_places=2, default=0.0)
     
-    
+    def get_id(self):
+        self.id = f"{self.start_in[:4].upper()}-{self.end_in[:4].upper()}"
+        return self.id
+        
+        
     def __str__(self):
         return str(self.id)
 

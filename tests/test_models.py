@@ -193,7 +193,6 @@ class TestReservationModel:
             driver=driver
         )
     
-    
     @pytest.mark.django_db
     def test_create_reservation(self, customer, destination, car):
         Reservation.objects.create(
