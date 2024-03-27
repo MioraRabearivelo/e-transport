@@ -59,10 +59,13 @@ class Customer(models.Model):
     messages = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True)
     
     def save(self, *args, **kwargs):
-        if self.second_phone_number == self.first_phone_number:
+        if len(self.first_phone_number) and len(self.second_phone_number) != 9:
+            raise ValidationError('The phone number is invalid')
+        elif self.second_phone_number == self.first_phone_number:
             raise ValidationError('The second phone number must be diffrent the first phone number')
         elif not self.second_phone_number:
             raise ValidationError('This fileds is required')
+        
         super().save(*args, **kwargs)
     
     def __str__(self):
@@ -70,7 +73,6 @@ class Customer(models.Model):
     
     
 class Bagages(models.Model):
-    
     id = models.UUIDField(primary_key=True, editable=False, unique=True, max_length=6, default=uuid.uuid4)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     weigth = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)

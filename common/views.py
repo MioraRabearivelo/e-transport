@@ -200,7 +200,7 @@ class CreateReservationView(generics.CreateAPIView):
     
 class UpdateResevationView(generics.UpdateAPIView):
     queryset = Reservation.objects.all()
-    serializer_class =ReservationSerializer
+    serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = ['id']
     
