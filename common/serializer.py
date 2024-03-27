@@ -84,7 +84,6 @@ class CarSerializer(serializers.ModelSerializer):
     description = serializers.HyperlinkedIdentityField(view_name='detail-car' , read_only=True)
     
     class Meta:
-        
         model = Car
         fields = ['car_number', 'destinations', 'drivers',  'description', 'bagages', 'customer']
         
