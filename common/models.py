@@ -40,7 +40,7 @@ class Message(models.Model):
     def save(self, *args, **kwargs):
         if not self.message_content:
             raise ValidationError('message content is required')
-        elif len(self.contact):
+        elif len(self.contact) != 9:
             raise ValidationError('Contact field is required')
         elif not self.name:
             raise ValidationError('User name field is required')
