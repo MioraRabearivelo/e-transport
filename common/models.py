@@ -65,7 +65,8 @@ class Customer(models.Model):
             raise ValidationError('The second phone number must be diffrent the first phone number')
         elif not self.second_phone_number:
             raise ValidationError('This fileds is required')
-        
+        elif len(self.cin) != 12:
+            raise ValidationError('CIN must be 12 character')
         super().save(*args, **kwargs)
     
     def __str__(self):
